@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Articles</h1>
+    <div style="display:flex; flex-direction: column;">
+        {% for article in object_list %}
+            <a href="{% url "article-detail" pk=article.id %}">{{ article.title }}</a>
+        {% empty %}
+            <li>No articles yet.</li>
+        {% endfor %}
+    </div>
+    <div>
+        <button onclick="create_article()">Create article</button>
+    </div>
+    <div id="dynamicEditor"></div>
+
+    {# scripts to handle editor behavior #}
+    {{media}}
+    <script>
+        const wrapper = document.getElementById('dynamicEditor');
+
+        function create_article(){
+            fetch("{% url 'get-editor' %}")
+            .then(response => {
+                if (!response.ok) {
+                throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                wrapper.innerHTML = html;
+            })
+            .catch(error => console.error('Request error:', error));
+        }
+        function dispose(){
+            wrapper.innerHTML = "";
+        }
+    </script>
+{% endblock %}

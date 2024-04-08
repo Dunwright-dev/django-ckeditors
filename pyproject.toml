@@ -1,0 +1,187 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "django-ckeditors"
+description = "CKEditors for Django."
+keywords = ["CKEditor", "CKEditors", "Django"]
+license = {text = "BSD-3-Clause"}
+readme = "README.rst"
+requires-python = ">=3.7"
+version = "0.0.1"
+
+authors = [
+    {"name" = "Vladislav Khoboko", "email" = "vladislah@gmail.com"},
+    {"name" = "Mark Sevelj", "email" = "mark.sevelj@dunwright.com.au"},
+]
+
+classifiers = [
+        "Environment :: Web Environment",
+        "Framework :: Django",
+        "Framework :: Django :: 2.2",
+        "Framework :: Django :: 3.0",
+        "Framework :: Django :: 4.0",
+        "Framework :: Django :: 5.0",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: BSD3 License",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
+        "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
+        "Topic :: Internet :: WWW/HTTP",
+        "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    ]
+
+dependencies = [
+  'Django >= 2.2',
+  'Pillow',
+]
+
+[project.urls]
+#homepage = "https://pypi.org/project/django-ckeditors/"
+repository = "https://github.com/imAsparky/django-ckeditors.git"
+
+[project.optional-dependencies]
+dev = [
+  'bandit[toml] == 1.7.6',
+  'black == 22.12.0',
+  'codespell == 2.2.2',
+  'coverage == 7.4.0',
+  'mypy == 1.8.0',
+  'mypy-extensions == 1.0.0',
+  'pytest == 7.4.4',
+  'pytest-cov == 4.0.0',
+  'pytest-django == 4.5.2',
+  'pytest-mock == 3.10.0',
+  'safety == 2.3.5',
+  'types-setuptools == 65.6.0.2',
+  'typing_extensions == 4.9.0',
+]
+
+[tool.setuptools]
+packages = ["django_ckeditors"]
+
+[tool.black]
+exclude = '''
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.pytest_cache
+    | \.tox
+    | \.venv
+    | venv
+    | env
+    | _build
+    | buck-out
+    | build
+    | dist
+    | django_ckeditors
+    | migrations
+  )/
+)
+'''
+
+[tool.mypy]
+exclude = [
+    'example/blog/articles/migrations',
+    "build",
+    "env",
+    "example/blog/django_ckeditors"
+]
+ignore_missing_imports = true
+install_types = true
+
+[tool.ruff]
+lint.select = [
+  "A",      # flake8-builtins
+  "AIR",    # Airflow
+  "ARG",    # flake8-unused-arguments
+  "ASYNC",  # flake8-async
+  "B",      # flake8-bugbear
+  "BLE",    # flake8-blind-except
+  "C4",     # flake8-comprehensions
+  "C90",    # McCabe cyclomatic complexity
+  "CPY",    # Copyright-related rules
+  "DJ",     # flake8-django
+  "DTZ",    # flake8-datetimez
+  "E",      # pycodestyle
+  "ERA",    # eradicate
+  "EXE",    # flake8-executable
+  "F",      # Pyflakes
+  "FA",     # flake8-future-annotations
+  "FBT",    # flake8-boolean-trap
+  "FIX",    # flake8-fixme
+  "FLY",    # flynt
+  "G",      # flake8-logging-format
+  "I",      # isort
+  "ICN",    # flake8-import-conventions
+  "INP",    # flake8-no-pep420
+  "INT",    # flake8-gettext
+  "ISC",    # flake8-implicit-str-concat
+  "N",      # pep8-naming
+  "PERF",   # Perflint
+  "PGH",    # pygrep-hooks
+  "PIE",    # flake8-pie
+  "PL",     # Pylint
+  "PT",     # flake8-pytest-style
+  "PYI",    # flake8-pyi
+  "RET",    # flake8-return
+  "RSE",    # flake8-raise
+  "RUF",    # Ruff-specific rules
+  "S",      # flake8-bandit
+  "SIM",    # flake8-simplify
+  "SLF",    # flake8-self
+  "SLOT",   # flake8-slots
+  "T10",    # flake8-debugger
+  "T20",    # flake8-print
+  "TCH",    # flake8-type-checking
+  "TD",     # flake8-todos
+  "TID",    # flake8-tidy-imports
+  "TRY",    # tryceratops
+  "UP",     # pyupgrade
+  "W",      # pycodestyle
+  "YTT",    # flake8-2020
+  # "ANN",  # flake8-annotations
+  "COM",  # flake8-commas
+  # "D",    # pydocstyle
+  "EM",   # flake8-errmsg
+  # "NPY",  # NumPy-specific rules
+  # "PD",   # pandas-vet
+  # "PTH",  # flake8-use-pathlib
+  # "Q",    # flake8-quotes
+]
+lint.ignore = ["RUF012"]
+target-version = "py38"
+line-length = 112  # Recommended: 88
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10  # Recommended: 10
+
+[tool.ruff.lint.pylint]
+allow-magic-value-types = ["int", "str"]
+max-args = 5  # Recommended: 5
+max-branches = 12  # Recommended: 12
+max-returns = 6  # Recommended: 6
+max-statements = 50  # Recommended: 50
+
+[tool.ruff.lint.per-file-ignores]
+"example/blog/articles/migrations/*" = ["E501"]
+"django_ckeditors/fields.py" = ["PIE800"]
+"django_ckeditors/views.py" = ["B904", "N818", "RET505", "RUF012", "TRY003", "TRY200"]
+"django_ckeditors/widgets.py" = ["B009", "S308"]
+"example/blog/*" = ["INP001"]
+"example/blog/articles/models.py" = ["DJ001"]
+"example/blog/articles/views.py" = ["ARG002"]
+"example/blog/conftest.py" = ["SIM115"]
+"example/blog/manage.py" = ["TRY003"]
+"example/blog/blog/settings.py" = ["N816", "S105"]
+"example/blog/tests/*" = ["S101"]
+"example/blog/tests/test_upload_file.py" = ["ARG001"]
