@@ -1,18 +1,5 @@
-*.egg-info
-*.pyc
-*.swp
-/bin/
-/develop-eggs/
-/eggs/
-/parts/
-*.DS_Store
-*.egg
-db.sqlite3
-.idea
-/dist
-django_ckeditors/node_modules/
-.vscode/
-build/
+# Project files
+docs/html/*
 example/blog/env
 example/blog/db.sqlite3
 django-ckeditors.iml
@@ -28,6 +15,24 @@ example/coverage.xml
 example/blog/pyproject.toml
 django_ckeditors/static/django_ckeditors/dist/*.map
 django_ckeditors/static/django_ckeditors/dist
+django_ckeditors/node_modules/
+
+
+# Other files
+*.egg-info
+*.pyc
+*.swp
+/bin/
+/develop-eggs/
+/eggs/
+/parts/
+*.DS_Store
+*.egg
+db.sqlite3
+.idea
+/dist
+.vscode/
+build/
 build.sh
 lint.sh
 venv
