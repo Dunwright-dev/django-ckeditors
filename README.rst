@@ -19,7 +19,7 @@ Django CKEditors
     **CKEditor 5 Integration for Django >= 2.0**
 
     Vendored from this excellent project: https://github.com/hvlads/django-ckeditor-5
-|
+
 
 What is django-ckeditors
 ------------------------
@@ -35,7 +35,7 @@ django-ckeditors: A Powerful and Versatile Rich Text Editor for Your Django Proj
 
 |
 
-See the **quickstart**: :ref:`how-to-quickstart`
+See the Quickstart: `here <https://django-ckeditors.readthedocs.io/en/latest/how-to/quickstart.html>`__
 
 |
 
