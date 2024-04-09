@@ -2,9 +2,18 @@
 Django CKEditors
 ================
 
-   CKEditors for Django >= 2.0
+|
 
-Vendored from https://github.com/hvlads/django-ckeditor-5
+.. image:: https://readthedocs.org/projects/django-ckeditors/badge/?version=latest
+    :target: https://django-ckeditors.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+
+|
+
+    **CKEditors for Django >= 2.0**
+
+    Vendored from https://github.com/hvlads/django-ckeditor-5
 
 Quick start
 ===========
