@@ -13,7 +13,7 @@ Django CKEditors
 
     **CKEditors for Django >= 2.0**
 
-    Vendored from https://github.com/hvlads/django-ckeditor-5
+    Vendored from this excellent project: https://github.com/hvlads/django-ckeditor-5
 
 Quick start
 ===========
