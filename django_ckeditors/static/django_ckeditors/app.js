@@ -53,10 +53,10 @@ function createEditors(element = document.body) {
         const script_id = `${editorEl.id}_script`;
         editorEl.nextSibling.remove();
         const upload_url = element.querySelector(
-            `#${script_id}-ck-editor-5-upload-url`
+            `#${script_id}-ck-editors-upload-url`
         ).getAttribute('data-upload-url');
         const csrf_cookie_name = element.querySelector(
-            `#${script_id}-ck-editor-5-upload-url`
+            `#${script_id}-ck-editors-upload-url`
         ).getAttribute('data-csrf_cookie_name');
         const labelElement = element.querySelector(`[for$="${editorEl.id}"]`);
         if (labelElement) {
