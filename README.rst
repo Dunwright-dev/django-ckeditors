@@ -8,6 +8,18 @@ Django CKEditors |Docs| |Django| |Repo|
 
     Vendored from this excellent project: https://github.com/hvlads/django-ckeditor-5
 
+|
+
+Licenses
+--------
+
+|
+
+    **Django:** BSD 3-Clause "New" or "Revised" License
+
+    **CKEditor 5:** GPL 2+ copyleft license
+
+|
 
 What is django-ckeditors
 ------------------------
