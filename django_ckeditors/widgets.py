@@ -80,7 +80,7 @@ class CKEditorsWidget(forms.Widget):
 
         context["config"] = self.config
         context["script_id"] = "{}{}".format(attrs["id"], "_script")
-        context["upload_url"] = reverse("ck_editors_upload_file")
+        context["upload_url"] = reverse("ck_editors_upload_image")
         context["csrf_cookie_name"] = settings.CSRF_COOKIE_NAME
         if self._config_errors:
             context["errors"] = ErrorList(self._config_errors)

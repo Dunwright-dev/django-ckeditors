@@ -1,18 +1,6 @@
-================
-Django CKEditors
-================
 
-|
-
-.. image:: https://readthedocs.org/projects/django-ckeditors/badge/?version=latest
-    :target: https://django-ckeditors.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-.. image:: https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FimAsparky%2Fdjango-ckeditors%2Fmain%2Fpyproject.toml&query=project.dependencies&logo=Django&label=Versions&labelColor=%23092E20
-   :alt: Django Version Badge
-   :target: https://docs.djangoproject.com/en/4.2/
-.. image:: https://www.repostatus.org/badges/latest/wip.svg
-   :alt: Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.
-   :target: https://www.repostatus.org/#wip
+Django CKEditors |Docs| |Django| |Repo|
+======================================
 
 |
 
@@ -120,3 +108,13 @@ Ideal For:
         * Mention
 
 |
+
+.. |Docs| image:: https://readthedocs.org/projects/django-ckeditors/badge/?version=latest
+    :target: https://django-ckeditors.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+.. |Django| image:: https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FimAsparky%2Fdjango-ckeditors%2Fmain%2Fpyproject.toml&query=project.dependencies&logo=Django&label=Versions&labelColor=%23092E20
+   :target: https://docs.djangoproject.com/en/4.2/
+   :alt: Django Version Badge
+.. |Repo| image:: https://www.repostatus.org/badges/latest/wip.svg
+   :target: https://www.repostatus.org/#wip
+   :alt: Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.
