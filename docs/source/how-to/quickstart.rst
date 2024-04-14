@@ -64,9 +64,8 @@ Configuration
       from django.conf import settings
       from django.conf.urls.static import static
 
-      urlpatterns = [
-          # ... your existing URLs
-          path("ckeditor5/", include('django_ckeditors.urls'), name="ck_editors_upload_file"),
+      urlpatterns += [
+        path("ckeditors/", include('django_ckeditors.urls'), name="ck-editors"),
       ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 Using the Editor
@@ -81,7 +80,7 @@ Using the Editor
 
       class Article(models.Model):
           title = models.CharField('Title', max_length=200)
-          text = CKEditorsField('Text')  # Use the Rich Text Field!
+          text = CKEditorsField(verbose_name='Text')  # Use the Rich Text Field!
 
 2. **In a Form:**
 
