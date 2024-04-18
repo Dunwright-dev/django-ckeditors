@@ -59,6 +59,7 @@ dev = [
   'pytest-cov == 4.0.0',
   'pytest-django == 4.5.2',
   'pytest-mock == 3.10.0',
+  'ruff == 0.3.7',
   'safety == 2.3.5',
   'types-setuptools == 65.6.0.2',
   'typing_extensions == 4.9.0',
