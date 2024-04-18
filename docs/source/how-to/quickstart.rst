@@ -122,6 +122,23 @@ Customization
 * **CSS Styling:** Share styles between the editor and your website by using the `content-styles.css` from CKEditor 5. Refer to the CKEditor 5 documentation for customization options: https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html#sharing-content-styles-between-frontend-and-backend .
 
 
+Settings
+--------
+
+|
+
+* **DJ_CKE_PERMITTED_IMAGE_TYPES:list =  []**
+
+CKEditor 5 allows these image types by default: `JPEG`, `PNG`, `GIF`, `BMP`, `WEBP`, `TIFF`. You can customize which image types are allowed to be uploaded by changing this setting.
+
+|
+
+* **DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS:bool = False**
+
+Set this to True and only staff members are permitted to upload CKEditor images.
+
+|
+
 Making Your Django Website Multilingual with CKEditor
 -----------------------------------------------------
 
