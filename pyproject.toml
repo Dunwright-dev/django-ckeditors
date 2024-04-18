@@ -41,6 +41,7 @@ classifiers = [
 dependencies = [
   'Django >= 2.2',
   'Pillow',
+  'filetype',
 ]
 
 [project.urls]
@@ -59,7 +60,7 @@ dev = [
   'pytest-cov == 4.0.0',
   'pytest-django == 4.5.2',
   'pytest-mock == 3.10.0',
-  'ruff == 0.3.7',
+  'ruff',
   'safety == 2.3.5',
   'types-setuptools == 65.6.0.2',
   'typing_extensions == 4.9.0',
@@ -185,5 +186,5 @@ max-statements = 50  # Recommended: 50
 "example/blog/conftest.py" = ["SIM115"]
 "example/blog/manage.py" = ["TRY003"]
 "example/blog/blog/settings.py" = ["N816", "S105"]
-"example/blog/tests/*" = ["S101"]
+"example/blog/tests/*" = ["S101", "ERA001"]  # ERA001 temporary for testing.
 "example/blog/tests/test_upload_file.py" = ["ARG001"]
