@@ -1,4 +1,5 @@
 """django-ckeditors setup."""
+
 import os
 
 from setuptools import setup

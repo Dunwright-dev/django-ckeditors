@@ -7,7 +7,7 @@ from django_ckeditors.forms import UploadFileForm
 
 
 @pytest.fixture()
-def file():
+def image_png():
     file_path = os.path.join(os.path.dirname(__file__), "fixtures", "files", "test.png")
     return open(file_path, "rb")
 
