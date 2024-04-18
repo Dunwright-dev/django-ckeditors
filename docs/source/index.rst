@@ -11,6 +11,7 @@
    :titlesonly:
 
    how-to/index-how-to
+   discussion/index-discussion
 
 
 
