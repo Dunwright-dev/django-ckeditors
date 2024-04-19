@@ -6,7 +6,7 @@ import filetype
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.utils.module_loading import import_string
-from PIL import Image
+from PIL import Image, UnidentifiedImageError
 from PIL.Image import DecompressionBombError
 
 from django_ckeditors.exceptions import (
@@ -97,6 +97,13 @@ def image_verify(image):
         Image.open(image).verify()
     except FileNotFoundError as e:
         error_msg = "This image file is not valid or corrupted."
+        logger.exception(
+            error_msg,
+
+        )
+        raise PillowImageError(error_msg, e) from e
+    except UnidentifiedImageError as e:
+        error_msg = "This image file is corrupted."
         logger.exception(
             error_msg,
 
