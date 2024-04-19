@@ -3,13 +3,13 @@
 import logging
 
 from django import get_version
-from django.conf import settings
 from django.http import Http404
 
 from django_ckeditors.exceptions import (
     InvalidImageTypeError,
     PillowImageError,
 )
+from django_ckeditors.helpers import has_permission_to_upload_images
 
 if get_version() >= "4.0":
     from django.utils.translation import gettext_lazy as _
@@ -28,9 +28,8 @@ logger = logging.getLogger(__name__)
 
 
 def upload_image(request):
-    if hasattr(settings,
-               "DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS") and (
-               settings.DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS) or (
+
+    if not has_permission_to_upload_images(request) or (
             request.method != "POST"):
         raise Http404(_("Page not found."))
 
