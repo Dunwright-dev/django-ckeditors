@@ -25,6 +25,8 @@ SECRET_KEY = "mr3e&=yzha$_#-#1=ro@*rfsgm_k-ka%w$!=xgx1t@$9g!pz(_"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS: bool = False
+
 ALLOWED_HOSTS = [
     "127.0.0.1",
 ]

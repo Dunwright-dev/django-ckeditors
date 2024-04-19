@@ -114,3 +114,14 @@ def handle_uploaded_file(f):
     fs = storage()
     filename = fs.save(f.name, f)
     return fs.url(filename)
+
+
+def has_permission_to_upload_images(request)->bool:
+
+    has_perms = True
+    if hasattr(settings,  "DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS") and (
+            settings.DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS
+    ) and not request.user.is_staff:
+        has_perms = False
+
+    return has_perms
