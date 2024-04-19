@@ -1,60 +1,55 @@
-from io import BytesIO
-from unittest.mock import patch  # Or your favorite mocking library
+from unittest.mock import MagicMock, patch
 
-import filetype
 import pytest
+from django.contrib.auth.models import AnonymousUser
+from django.test import RequestFactory
 
-from django_ckeditors.exceptions import InvalidImageTypeError
-from django_ckeditors.helpers import image_verify
-
-
-@patch("PIL.Image.open")  # Mock Image.open
-def test_invalid_filetype(mock_image_open):
-    mock_image_open.side_effect = lambda x: filetype.guess(x).extension == "pdf"
-
-    # Simulate a PDF file's content
-    fake_pdf_data = b"Dummy PDF file content"
-
-    with pytest.raises(InvalidImageTypeError):
-        image_verify(BytesIO(fake_pdf_data))
+from django_ckeditors.exceptions import InvalidImageTypeError, PillowImageError
+from django_ckeditors.helpers import has_permission_to_upload_images, image_verify
 
 
-def test_valid_filetype(image_png):
+class TestHasPermissionToUploadImages:
+    @staticmethod
+    def test_non_staff_user_without_setting():
+        request = RequestFactory().get("/")
+        request.user = AnonymousUser()  # Simulate a non-authenticated user
 
-    image_verify(image=image_png)  # Should execute without raising exceptions
+        assert (
+            has_permission_to_upload_images(request) is True
+        )  # Should have permission
+
+    @staticmethod
+    @patch("django.conf.settings.DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS", new=True)
+    def test_non_staff_user_with_setting():
+        request = RequestFactory().get("/")
+        request.user = AnonymousUser()
+
+        assert has_permission_to_upload_images(request) is False
+
+    @staticmethod
+    @patch("django.conf.settings.DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS", new=True)
+    def test_staff_user():
+        request = RequestFactory().get("/")
+        request.user = MagicMock(is_staff=True)  # Simulate staff user
+
+        assert has_permission_to_upload_images(request) is True
 
 
-@patch("filetype.guess")
-def test_invalid_filetypes(mock_filetype):
-    mock_filetype.return_value.extension = "pdf"  # Unsupported type
+class TestImageVerify:
+    @staticmethod
+    def test_valid_filetype(valid_png_image):
 
-    with pytest.raises(InvalidImageTypeError):
-        image_verify("./files/images/this_is_a_pdf_file.jpg")
+        image_verify(image=valid_png_image)  # Should execute without raising exceptions
 
+    @staticmethod
+    def test_invalid_filetypes(invalid_jpg_image):
+        """invalid_jpg_image is a pdf file with jpg extension."""
 
-#
-# @patch("filetype.guess")
-# @patch("PIL.Image.open")
-# def test_pillow_error(mock_image_open, mock_filetype):
-#     mock_filetype.return_value.extension = "jpg"
-#     mock_image_open.side_effect = DecompressionBombError
-#
-#     # with open('./files/images/test.jpg', 'rb') as f:
-#     with pytest.raises(PillowImageError):
-#         image_verify("./files/images/test.jpg")
+        with pytest.raises(InvalidImageTypeError):
+            image_verify(invalid_jpg_image)
 
-
-# @patch("PIL.Image.open")  # Mock the Image.open function
-# def test_decompression_bomb(mock_image_open):
-#     mock_image_open.side_effect = Image.DecompressionBombError(
-#         "Simulated decompression error",
-#     )
-#
-#     with pytest.raises(PillowImageError) as excinfo:  # Expect PillowImageError
-#         image_verify("some_image.jpg")
-#
-#     assert "This image file is corrupted or too large to use." in str(excinfo.value)
-#     assert isinstance(
-#         excinfo.value.__cause__,
-#         Image.DecompressionBombError,
-#     )  # Check for chained exception
+    @staticmethod
+    def test_corrupt_png(corrupted_png_image):
+        """corrupted_png_image is a png with random bytes changed."""
+        with pytest.raises(PillowImageError):
+            image_verify(corrupted_png_image)
