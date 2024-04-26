@@ -20,7 +20,7 @@ from django.http import JsonResponse
 
 from django_ckeditors.forms import UploadFileForm
 from django_ckeditors.helpers import (
-    handle_uploaded_file,
+    handle_uploaded_image,
     image_verify,
 )
 
@@ -42,7 +42,7 @@ def upload_image(request):
         except InvalidImageTypeError as e:
             return JsonResponse({"error": {"message": f"{e}"}})
         if form.is_valid():
-            url = handle_uploaded_file(request.FILES["upload"])
+            url = handle_uploaded_image(request)
             return JsonResponse({"url": url})
         else:
             return JsonResponse({"error": form.errors})
