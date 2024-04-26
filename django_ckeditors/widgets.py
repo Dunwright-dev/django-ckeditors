@@ -23,7 +23,7 @@ class CKEditorsWidget(forms.Widget):
         self._config_errors = []
         self.config = DEFAULT_CONFIG.copy()
         try:
-            configs = getattr(settings, "CKEDITORS_CONFIGS")
+            configs = getattr(settings, "DJ_CKE_EDITORS_CONFIGS")
             try:
                 self.config.update(configs[config_name])
             except (TypeError, KeyError, ValueError) as ex:
@@ -38,7 +38,8 @@ class CKEditorsWidget(forms.Widget):
 
     def format_error(self, ex):
         return "{} {}".format(
-            _("Check the correct settings.CKEDITORS_CONFIGS "), str(ex),
+            _("Check the correct settings.DJ_CKE_EDITORS_CONFIGS "),
+            str(ex),
         )
 
     class Media:
@@ -47,18 +48,18 @@ class CKEditorsWidget(forms.Widget):
                 "django_ckeditors/dist/styles.css",
             ],
         }
-        custom_css = getattr(settings, "CKEDITORS_CUSTOM_CSS", None)
+        custom_css = getattr(settings, "DJ_CKE_CUSTOM_CSS", None)
         if custom_css:
             css["all"].append(custom_css)
         js = ["django_ckeditors/dist/bundle.js"]
-        configs = getattr(settings, "CKEDITORS_CONFIGS", None)
+        configs = getattr(settings, "DJ_CKE_EDITORS_CONFIGS", None)
         if configs is not None:
             for config in configs:
-                language = configs[config].get('language')
+                language = configs[config].get("language")
                 if language:
                     languages = []
-                    if isinstance(language, dict) and language.get('ui'):
-                        language = language.get('ui')
+                    if isinstance(language, dict) and language.get("ui"):
+                        language = language.get("ui")
                     elif isinstance(language, str):
                         languages.append(language)
                     elif isinstance(language, list):
@@ -81,7 +82,7 @@ class CKEditorsWidget(forms.Widget):
         context["config"] = self.config
         context["script_id"] = "{}{}".format(attrs["id"], "_script")
         context["upload_url"] = reverse("ck_editors_upload_image")
-        context["csrf_cookie_name"] = settings.CSRF_COOKIE_NAME
+        context["csrf_cookie_name"] = settings.DJ_CKE_CSRF_COOKIE_NAME
         if self._config_errors:
             context["errors"] = ErrorList(self._config_errors)
 
