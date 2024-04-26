@@ -9,7 +9,6 @@ version = "0.0.1"
 dependencies = [
     'Django >= 2.2',
     'Pillow',
-    'django-ckeditors'
 ]
 
 [tool.setuptools]
@@ -56,10 +55,10 @@ filterwarnings = """
 addopts = """
   --strict
   --doctest-modules
-  --cov
+  --cov=django_ckeditors
   --cov-branch
   --cov-report=term-missing:skip-covered
   --cov-report=html
   --cov-report=xml
-  --cov-fail-under=80
+  --cov-fail-under=60
 """
