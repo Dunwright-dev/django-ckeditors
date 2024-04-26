@@ -51,7 +51,7 @@ Configuration
       MEDIA_URL = '/media/'
       MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-      CKEDITORS_CONFIGS = {
+      DJ_CKE_EDITORS_CONFIGS = {
           'default': {
               'toolbar': 'full',  # Customize as needed (see below)
           },
@@ -117,7 +117,7 @@ Using the Editor
 Customization
 -------------
 
-* **Toolbar:** Edit the `toolbar` option in `CKEDITORS_CONFIGS` to select your desired buttons. Refer to the CKEditor 5 documentation for customization options: https://ckeditor.com/docs/ckeditor5/latest/features/index.html.
+* **Toolbar:** Edit the `toolbar` option in `DJ_CKE_EDITORS_CONFIGS` to select your desired buttons. Refer to the CKEditor 5 documentation for customization options: https://ckeditor.com/docs/ckeditor5/latest/features/index.html.
 
 * **CSS Styling:** Share styles between the editor and your website by using the `content-styles.css` from CKEditor 5. Refer to the CKEditor 5 documentation for customization options: https://ckeditor.com/docs/ckeditor5/latest/installation/advanced/content-styles.html#sharing-content-styles-between-frontend-and-backend .
 
@@ -129,15 +129,47 @@ Settings
 
 * **DJ_CKE_PERMITTED_IMAGE_TYPES:list =  []**
 
-CKEditor 5 allows these image types by default: `JPEG`, `PNG`, `GIF`, `BMP`, `WEBP`, `TIFF`. You can customize which image types are allowed to be uploaded by changing this setting.
+Optional: CKEditor 5 allows these image types by default: `JPEG`, `PNG`, `GIF`, `BMP`, `WEBP`, `TIFF`. You can customize which image types are allowed to be uploaded by changing this setting.
 
 |
 
 * **DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS:bool = False**
 
-Set this to True and only staff members are permitted to upload CKEditor images.
+Optional: Set this to True and only staff members are permitted to upload CKEditor images.
 
 |
+
+* **DJ_CKE_IMAGE_URL_HANDLER:str = ""**
+
+|
+
+Optional: Provide a custom image url handler. See below for the signature.
+
+.. note::
+
+    django-ckeditors assumes you return a valid url string.  You will need to ensure
+    that it is valid as no checks are done.  Your custom url will be appended to your
+    media setting.
+
+    For example:
+
+    if you return the url "images/cke/image_name.png"
+
+    The image will be saved to "media/images/cke/image_name.png"
+
+
+.. code-block:: python
+
+    def my_image_url_handler(request):
+
+        image = request.FILES['upload']
+
+        # Your custom code
+
+        return valid_url_string
+
+ |
+
 
 Making Your Django Website Multilingual with CKEditor
 -----------------------------------------------------
