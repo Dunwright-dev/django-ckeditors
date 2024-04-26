@@ -70,6 +70,7 @@ dev = [
 packages = ["django_ckeditors"]
 
 [tool.black]
+max-line-length = 88
 exclude = '''
 (
   /(
@@ -163,7 +164,7 @@ lint.select = [
 ]
 lint.ignore = ["RUF012"]
 target-version = "py38"
-line-length = 112  # Recommended: 88
+line-length = 88  # Recommended: 88
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10  # Recommended: 10
