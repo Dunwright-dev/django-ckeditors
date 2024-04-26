@@ -20,10 +20,10 @@ class TestDjangoCKEditorsSettingsConfig(SimpleTestCase):
     def test_dj_cke_custom_colour_pallette_default_setting(self):
 
         # default setting
-        assert "color"  in list(
+        assert "color" in list(
             settings.DJ_CKE_CUSTOM_COLOUR_PALETTE[0].keys(),
         )
-        assert  "label" in list(
+        assert "label" in list(
             settings.DJ_CKE_CUSTOM_COLOUR_PALETTE[0].keys(),
         )
 
