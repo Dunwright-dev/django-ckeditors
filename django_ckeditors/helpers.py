@@ -146,9 +146,16 @@ def handle_uploaded_image(request):
         url = url_handler(request)  # Get the URL using the custom handler
 
     else:
-
         url = img.name  # Default to using the image's filename as the URL
 
+    if settings.DJ_CKE_IMAGE_FORMATTER:
+        try:
+            formatter = import_string(settings.DJ_CKE_IMAGE_FORMATTER)
+            img=formatter(img)
+        except TypeError as e:
+     
+            raise TypeError from e
+    print('%%%%%%%%%%%%  Helper img upload')
     filename = storage.save(name=url, content=img)
 
     return storage.url(filename)  # Return the URL of the saved image

@@ -116,7 +116,8 @@ function getAddedNodes(recordList) {
         .filter(node => node.nodeType === 1);
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+
+function initializeDjCKEditors(element = document.body) {
     createEditors();
 
     if (typeof django === "object" && django.jQuery) {
@@ -143,4 +144,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Starts to observe the selected father element with the configured options
     observer.observe(mainContent, observerOptions);
+}
+
+
+// Expose the function for on-demand use
+window.initializeDjCKEditors = initializeDjCKEditors;
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    initializeDjCKEditors();
+
 });

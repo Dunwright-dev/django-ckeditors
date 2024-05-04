@@ -42,8 +42,12 @@ def upload_image(request):
         except InvalidImageTypeError as e:
             return JsonResponse({"error": {"message": f"{e}"}})
         if form.is_valid():
-            url = handle_uploaded_image(request)
-            return JsonResponse({"url": url})
+            try:
+                url = handle_uploaded_image(request)
+                return JsonResponse({"url": url})
+            except TypeError as e:
+                error_msg = "The file you have supplied is invalid."
+                JsonResponse({"error": {"message": error_msg}})
         else:
             return JsonResponse({"error": form.errors})
 
