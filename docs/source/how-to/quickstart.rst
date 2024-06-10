@@ -57,16 +57,24 @@ Configuration
           },
       }
 
-3. **Add URLs to your `urls.py`**
+3. **Add `ckeditors` URL to your project root `urls.py`**
 
    .. code-block:: python
 
+      # Optional imports if using debug.
       from django.conf import settings
-      from django.conf.urls.static import static
+      from django.conf.urls.static import static 
 
-      urlpatterns += [
+      urlpatterns = [
         path("ckeditors/", include('django_ckeditors.urls'), name="ck-editors"),
-      ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+      ]
+
+      # Optional setting for local development.
+
+      if settings.DEBUG:
+          urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+|
 
 Using the Editor
 ----------------
@@ -141,9 +149,15 @@ Optional: Set this to True and only staff members are permitted to upload CKEdit
 
 * **DJ_CKE_IMAGE_URL_HANDLER:str = ""**
 
+Optional: Provide a custom image url handler. See below for the signature.
+
 |
 
-Optional: Provide a custom image url handler. See below for the signature.
+* **DJ_CKE_IMAGE_FORMATTER:str = ""**
+
+Optional: Provide a custom image format handler.
+
+|
 
 .. note::
 
@@ -156,6 +170,9 @@ Optional: Provide a custom image url handler. See below for the signature.
     if you return the url "images/cke/image_name.png"
 
     The image will be saved to "media/images/cke/image_name.png"
+
+|
+
 
 
 .. code-block:: python
