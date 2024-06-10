@@ -1,10 +1,9 @@
 """django-ckeditors app.py file"""
 from __future__ import annotations
 
-import sys
-import django
 from django.apps import AppConfig
 from django.conf import settings
+
 
 class DjangoCKEditorsConfig(AppConfig):
     name = "django_ckeditors"
@@ -12,7 +11,6 @@ class DjangoCKEditorsConfig(AppConfig):
     def ready(self):
         # Unsure as to why this was used originally,
         # but here it is just in case.
-        print('#################  UPDATED')
         if not hasattr(settings, "DJ_CKE_CSRF_COOKIE_NAME"):
             settings.DJ_CKE_CSRF_COOKIE_NAME: str = settings.CSRF_COOKIE_NAME  # type: ignore[attr-defined]
 
@@ -27,18 +25,10 @@ class DjangoCKEditorsConfig(AppConfig):
             ]
 
         if not hasattr(settings, "DJ_CKE_CUSTOM_CSS"):
-            settings.DJ_CKE_CUSTOM_CSS: Versionstr = ""  # type: ignore[attr-defined]
+            settings.DJ_CKE_CUSTOM_CSS: str = ""  # type: ignore[attr-defined]
 
-        if django.VERSION >= (3,2,9) and sys.version_info >= (3,10):
-            if not hasattr(settings, "DJ_CKE_IMAGE_FORMATTER"):
-                # settings.DJ_CKE_IMAGE_FORMATTER: str = "django_ckeditors.image.image_formatter"  # type: ignore[attr-defined]
-                settings.DJ_CKE_IMAGE_FORMATTER=''
-            if not hasattr(settings, "DJ_CKE_IMAGE_SAVE_FILE_TYPE"):
-                settings.DJ_CKE_IMAGE_SAVE_FILE_TYPE: str = "webp"  # type: ignore[attr-defined]
-            if not hasattr(settings, "DJ_CKE_IMAGE_SAVE_QUALITY"):
-                settings.DJ_CKE_IMAGE_SAVE_QUALITY: int = None  # type: ignore[attr-defined]
-        else:
-            settings.DJ_CKE_IMAGE_FORMATTER: str = "" # type: ignore[attr-defined]
+        if not hasattr(settings, "DJ_CKE_IMAGE_FORMATTER"):
+            settings.DJ_CKE_IMAGE_FORMATTER = ""
 
         if not hasattr(settings, "DJ_CKE_IMAGE_URL_HANDLER"):
             settings.DJ_CKE_IMAGE_URL_HANDLER: str = ""  # type: ignore[attr-defined]

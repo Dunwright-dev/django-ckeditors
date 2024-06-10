@@ -153,9 +153,7 @@ def handle_uploaded_image(request):
             formatter = import_string(settings.DJ_CKE_IMAGE_FORMATTER)
             img=formatter(img)
         except TypeError as e:
-     
             raise TypeError from e
-    print('%%%%%%%%%%%%  Helper img upload')
     filename = storage.save(name=url, content=img)
 
     return storage.url(filename)  # Return the URL of the saved image
