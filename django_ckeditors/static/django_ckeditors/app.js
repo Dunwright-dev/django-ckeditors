@@ -116,6 +116,8 @@ function getAddedNodes(recordList) {
         .filter(node => node.nodeType === 1);
 }
 
+window.createEditors = createEditors;
+
 document.addEventListener("DOMContentLoaded", () => {
     createEditors();
 
