@@ -27,6 +27,9 @@ class DjangoCKEditorsConfig(AppConfig):
         if not hasattr(settings, "DJ_CKE_CUSTOM_CSS"):
             settings.DJ_CKE_CUSTOM_CSS: str = ""  # type: ignore[attr-defined]
 
+        if not hasattr(settings, "DJ_CKE_IMAGE_FORMATTER"):
+            settings.DJ_CKE_IMAGE_FORMATTER = ""  # type: ignore[attr-defined]
+
         if not hasattr(settings, "DJ_CKE_IMAGE_URL_HANDLER"):
             settings.DJ_CKE_IMAGE_URL_HANDLER: str = ""  # type: ignore[attr-defined]
 
