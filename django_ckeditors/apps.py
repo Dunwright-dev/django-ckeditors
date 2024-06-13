@@ -38,6 +38,7 @@ class DjangoCKEditorsConfig(AppConfig):
 
         if not hasattr(settings, "DJ_CKE_PERMITTED_IMAGE_TYPES"):
             settings.DJ_CKE_PERMITTED_IMAGE_TYPES: list[str] = [  # type: ignore[attr-defined]
+                "jpg",
                 "jpeg",
                 "png",
                 "gif",
