@@ -82,18 +82,16 @@ def image_verify(image):
     :raises InvalidImageTypeError: If the image has an unsupported file type.
     """
 
-    # Fallback to `CKEditor 5` default image types if not set.
+    # Fallback to `CKEditors` default image types if not set.
     permitted_image_types = settings.DJ_CKE_PERMITTED_IMAGE_TYPES
-
     kind = filetype.guess(image)
-    if kind is None or kind.extension not in permitted_image_types:
+    if kind is None or kind.extension.lower() not in permitted_image_types:
         error_msg = (
-            "Invalid image type, valid types "
-            "[ 'jpeg', 'png', 'gif', 'bmp', 'webp', 'tiff' ]"
+            f"Invalid image type, valid types {permitted_image_types}\n"
+            f"It seems you have uploaded a '{kind.extension}' filetype!"
         )
         logger.error(error_msg)
         raise InvalidImageTypeError(error_msg)
-
 
     try:
         Image.open(image).verify()
@@ -134,7 +132,6 @@ def handle_uploaded_image(request):
     except ImproperlyConfigured:
         error_msg = "A valid storage system has not been configured"
         logger.exception(error_msg)
-        # .. todo:: Return json response with errors.
         return error_msg
 
     img = request.FILES["upload"]  # Extract the uploaded image file
@@ -146,7 +143,6 @@ def handle_uploaded_image(request):
         url = url_handler(request)  # Get the URL using the custom handler
 
     else:
-
         url = img.name  # Default to using the image's filename as the URL
 
     filename = storage.save(name=url, content=img)
@@ -155,7 +151,6 @@ def handle_uploaded_image(request):
 
 
 def has_permission_to_upload_images(request) -> bool:
-
     has_perms = True
     if (
         hasattr(settings, "DJ_CKE_STAFF_ONLY_IMAGE_UPLOADS")
