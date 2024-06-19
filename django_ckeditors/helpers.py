@@ -126,6 +126,7 @@ def handle_uploaded_image(request):
 
     :returns: (URL) The URL where the uploaded image is stored.
     """
+    image = request.FILES["upload"]  # Extract the uploaded image file
 
     try:
         storage = get_storage_class()
@@ -134,19 +135,30 @@ def handle_uploaded_image(request):
         logger.exception(error_msg)
         return error_msg
 
-    img = request.FILES["upload"]  # Extract the uploaded image file
-
-    # Check for a custom URL handler in Django setting
-    custom_url_handler = getattr(settings, "DJ_CKE_IMAGE_URL_HANDLER", None)
-    if custom_url_handler:
-        url_handler = import_string(custom_url_handler)
-        url = url_handler(request)  # Get the URL using the custom handler
-
+    # Get image and URL handlers
+    if getattr(settings, "DJ_CKE_IMAGE_FORMATTER", None):
+        convert_image = import_string(settings.DJ_CKE_IMAGE_FORMATTER)
     else:
-        url = img.name  # Default to using the image's filename as the URL
+        convert_image = None
+    if getattr(settings, "DJ_CKE_IMAGE_URL_HANDLER", None):
+        get_url = import_string(settings.DJ_CKE_IMAGE_URL_HANDLER)
+    else:
+        get_url = None
 
-    filename = storage.save(name=url, content=img)
+    if settings.DJ_CKE_FORMAT_IMAGE and convert_image:
+        file_name, image = convert_image(image)
+    else:
+        file_name = image.name
+    url = (
+        get_url(
+            request,
+            file_name,
+        )
+        if get_url
+        else file_name
+    )
 
+    filename = storage.save(name=url, content=image)
     return storage.url(filename)  # Return the URL of the saved image
 
 

@@ -1,7 +1,5 @@
 class PillowImageError(Exception):
-    """Catchall for when a Pillow read error is encountered.
-
-    """
+    """Catchall for when a Pillow read error is encountered."""
 
     def __init__(self, message, image_type=None):
         super().__init__(message)
