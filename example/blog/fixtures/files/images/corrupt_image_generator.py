@@ -1,4 +1,5 @@
 """Generate corrupted image files for testing"""
+
 import os
 import random
 
@@ -26,6 +27,5 @@ def corrupt_image(filename, corruption_level=0.1):
 
 
 if __name__ == "__main__":
-
     # Example usage:
     corrupt_image("test.png")
