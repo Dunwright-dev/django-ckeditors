@@ -15,3 +15,5 @@ Discussion
    :titlesonly:
 
    why-ckeditor.rst
+   discussion-image-conversion-quality.rst
+   discussion-default-image-conversion.rst
