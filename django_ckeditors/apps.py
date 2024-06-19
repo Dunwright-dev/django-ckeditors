@@ -1,4 +1,5 @@
 """django-ckeditors app.py file"""
+
 from __future__ import annotations
 
 from django.apps import AppConfig
@@ -28,7 +29,11 @@ class DjangoCKEditorsConfig(AppConfig):
             settings.DJ_CKE_CUSTOM_CSS: str = ""  # type: ignore[attr-defined]
 
         if not hasattr(settings, "DJ_CKE_IMAGE_FORMATTER"):
-            settings.DJ_CKE_IMAGE_FORMATTER = ""  # type: ignore[attr-defined]
+            settings.DJ_CKE_IMAGE_FORMATTER = (
+                "django_ckeditors.image.convert_image_to_webp"
+            )
+        if not hasattr(settings, "DJ_CKE_FORMAT_IMAGE"):
+            settings.DJ_CKE_FORMAT_IMAGE = True  # False: keep original formt and name.
 
         if not hasattr(settings, "DJ_CKE_IMAGE_URL_HANDLER"):
             settings.DJ_CKE_IMAGE_URL_HANDLER: str = ""  # type: ignore[attr-defined]
