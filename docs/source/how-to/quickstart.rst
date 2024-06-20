@@ -88,7 +88,10 @@ Using the Editor
 
       class Article(models.Model):
           title = models.CharField('Title', max_length=200)
-          text = CKEditorsField(verbose_name='Text')  # Use the Rich Text Field!
+          text = CKEditorsField(
+          verbose_name='Text',
+          toolbar_config='default',
+          )  # Use the Rich Text Field!
 
 2. **In a Form:**
 
@@ -103,7 +106,9 @@ Using the Editor
                 model = Article
                 fields = ['title', 'text']
                 widgets = {
-                    'text': CKEditorsWidget()
+                    'text': CKEditorsWidget(
+                    toolbar_config='default',
+                    )
                 }
 
 3. **In a Template:**
