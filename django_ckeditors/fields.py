@@ -4,8 +4,8 @@ from .widgets import CKEditorsWidget
 
 
 class CKEditorsField(models.Field):
-    def __init__(self, *args, config_name="default", **kwargs) -> None:
-        self.config_name = config_name
+    def __init__(self, *args, toolbar_config="default", **kwargs) -> None:
+        self.toolbar_config = toolbar_config
         super().__init__(*args, **kwargs)
 
     def get_internal_type(self) -> str:
@@ -15,7 +15,7 @@ class CKEditorsField(models.Field):
         return super().formfield(
             **{
                 "max_length": self.max_length,
-                **({"widget": CKEditorsWidget(config_name=self.config_name)}),
+                **({"widget": CKEditorsWidget(toolbar_config=self.toolbar_config)}),
                 **kwargs,
             },
         )

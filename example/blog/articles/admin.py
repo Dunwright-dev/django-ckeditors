@@ -1,6 +1,9 @@
 from django.contrib import admin
 
-from .models import Article, Comment
+from articles.models import (
+    Article,
+    Comment,
+)
 
 
 class CommentAdminInline(admin.StackedInline):

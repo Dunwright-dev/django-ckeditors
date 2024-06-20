@@ -1,4 +1,5 @@
 """blog custom storage module."""
+
 from django.core.files.storage import FileSystemStorage
 
 

@@ -1,3 +1,5 @@
+"""django-ckeditors custom widget"""
+
 from django import forms, get_version
 from django.conf import settings
 from django.forms.renderers import get_default_renderer
@@ -11,21 +13,20 @@ else:
     from django.utils.translation import ugettext_lazy as _
 from django.forms.utils import ErrorList
 
-DEFAULT_CONFIG = {
-    "toolbar": ["heading", "|", "bold", "italic"],
-}
-
 
 class CKEditorsWidget(forms.Widget):
     template_name = "django_ckeditors/widget.html"
 
-    def __init__(self, config_name="default", attrs=None):
-        self._config_errors = []
-        self.config = DEFAULT_CONFIG.copy()
+    def __init__(self, toolbar_config="default", attrs=None):
+        self._config_errors: list = []
+        self.config: dict = {}
+        if toolbar_config not in settings.DJ_CKE_EDITORS_CONFIGS:
+            toolbar_config = "default"
+
         try:
             configs = getattr(settings, "DJ_CKE_EDITORS_CONFIGS")
             try:
-                self.config.update(configs[config_name])
+                self.config.update(configs[toolbar_config])
             except (TypeError, KeyError, ValueError) as ex:
                 self._config_errors.append(self.format_error(ex))
         except AttributeError as ex:
@@ -80,10 +81,11 @@ class CKEditorsWidget(forms.Widget):
             renderer = get_default_renderer()
 
         context["config"] = self.config
-        context["script_id"] = "{}{}".format(attrs["id"], "_script")
+        context["script_id"] = f'{attrs["id"]}_script'
         context["upload_url"] = reverse("ck_editors_upload_image")
         context["csrf_cookie_name"] = settings.DJ_CKE_CSRF_COOKIE_NAME
-        if self._config_errors:
-            context["errors"] = ErrorList(self._config_errors)
+        # .. NOTE: Config errors probably should not be sent to the end user.
+        # if self._config_errors:
+        #   context["errors"] = ErrorList(self._config_errors) #pylint:disable=commented-out code
 
         return mark_safe(renderer.render(self.template_name, context))
