@@ -18,7 +18,7 @@ class CommentForm(forms.ModelForm):
         widgets = {
             "text": CKEditorsWidget(
                 attrs={"class": "django_ckeditors"},
-                config_name="comment",
+                toolbar_config="comment",
             ),
         }
 
@@ -30,11 +30,11 @@ class ArticleForm(forms.ModelForm):
         widgets = {
             "text": CKEditorsWidget(
                 attrs={"class": "django_ckeditors"},
-                config_name="comment",
+                toolbar_config="extends",
             ),
             "text2": CKEditorsWidget(
                 attrs={"class": "django_ckeditors"},
-                config_name="comment",
+                toolbar_config="default",
             ),
         }
 
