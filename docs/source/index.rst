@@ -12,7 +12,7 @@
 
    how-to/index-how-to
    discussion/index-discussion
-
+   contributing
 
 
 Indices and tables
