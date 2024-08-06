@@ -17,7 +17,13 @@ from django.forms.utils import ErrorList
 class CKEditorsWidget(forms.Widget):
     template_name = "django_ckeditors/widget.html"
 
-    def __init__(self, toolbar_config="default", attrs=None):
+    def __init__(
+        self,
+        admin_calling: bool = False,
+        toolbar_config: str = "default",
+        attrs=None,
+    ):
+        self.admin_calling = admin_calling
         self._config_errors: list = []
         self.config: dict = {}
         if toolbar_config not in settings.DJ_CKE_EDITORS_CONFIGS:
@@ -52,7 +58,9 @@ class CKEditorsWidget(forms.Widget):
         custom_css = getattr(settings, "DJ_CKE_CUSTOM_CSS", None)
         if custom_css:
             css["all"].append(custom_css)
-        js = ["django_ckeditors/dist/bundle.js"]
+        # TODO: Need to find a simple way to make this conditional
+        # on admin_calling...
+        # js = ["django_ckeditors/dist/bundle.js"]
         configs = getattr(settings, "DJ_CKE_EDITORS_CONFIGS", None)
         if configs is not None:
             for config in configs:
