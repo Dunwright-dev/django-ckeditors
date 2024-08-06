@@ -41,12 +41,16 @@ function resolveElementArray(element, query) {
  * @returns {void}
  */
 function createEditors(element = document.body) {
+    // Find all elements within the specified container (or entire document body)
+    // that have the class 'django_ckeditors' (these are our potential CKEditor targets).
     const allEditors = resolveElementArray(element, '.django_ckeditors');
 
     allEditors.forEach(editorEl => {
+        // Check if this element is part of a Django formset template or 
+        // has already been processed.
         if (
             editorEl.id.indexOf('__prefix__') !== -1 ||
-            editorEl.getAttribute('data-processed') === '1'
+                editorEl.getAttribute('data-processed') === '1'
         ) {
             return
         }
@@ -68,8 +72,8 @@ function createEditors(element = document.body) {
             (key, value) => {
                 var match = value.toString().match(new RegExp('^/(.*?)/([gimy]*)$'));
                 if (match) {
-                   var regex = new RegExp(match[1], match[2]);
-                   return regex;
+                    var regex = new RegExp(match[1], match[2]);
+                    return regex;
                 }
                 return value;
             }
@@ -83,16 +87,16 @@ function createEditors(element = document.body) {
             editorEl,
             config
         ).then(editor => {
-            if (editor.plugins.has('WordCount')) {
-                const wordCountPlugin = editor.plugins.get('WordCount');
-                const wordCountWrapper = element.querySelector(`#${script_id}-word-count`);
-                wordCountWrapper.innerHTML = '';
-                wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
-            }
-            editors.push(editor);
-        }).catch(error => {
-            console.error((error));
-        });
+                if (editor.plugins.has('WordCount')) {
+                    const wordCountPlugin = editor.plugins.get('WordCount');
+                    const wordCountWrapper = element.querySelector(`#${script_id}-word-count`);
+                    wordCountWrapper.innerHTML = '';
+                    wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
+                }
+                editors.push(editor);
+            }).catch(error => {
+                console.error((error));
+            });
         editorEl.setAttribute('data-processed', '1');
     });
 
@@ -129,8 +133,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let addedNodes = getAddedNodes(mutations);
 
         addedNodes.forEach(node => {
-          // Initializes editors
-          createEditors(node);
+            // Initializes editors
+            createEditors(node);
         });
     });
 
