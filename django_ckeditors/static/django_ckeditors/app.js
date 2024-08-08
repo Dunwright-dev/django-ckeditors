@@ -62,10 +62,14 @@ function createEditors(element = document.body) {
         const csrf_cookie_name = element.querySelector(
             `#${script_id}-ck-editors-upload-url`
         ).getAttribute('data-csrf_cookie_name');
+        const data_extra = element.querySelector(
+            `#${script_id}-ck-editors-upload-url`
+        ).getAttribute('data-extra');
         const labelElement = element.querySelector(`[for$="${editorEl.id}"]`);
         if (labelElement) {
             labelElement.style.float = 'none';
         }
+        console.log('EXTRA DATA', data_extra)
 
         const config = JSON.parse(
             element.querySelector(`#${script_id}-span`).textContent,
@@ -79,8 +83,10 @@ function createEditors(element = document.body) {
             }
         );
         config.simpleUpload = {
-            'uploadUrl': upload_url, 'headers': {
+            'uploadUrl': upload_url, 
+            'headers': {
                 'X-CSRFToken': getCookie(csrf_cookie_name),
+                'X-Data-Extra': data_extra,
             }
         };
         ClassicEditor.create(

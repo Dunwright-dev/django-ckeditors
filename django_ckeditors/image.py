@@ -6,9 +6,10 @@ import logging
 from bisect import bisect
 from io import BytesIO
 from pathlib import Path
+from PIL import Image, ImageSequence
+
 
 from django.core.files.uploadedfile import UploadedFile
-from PIL import Image, ImageSequence
 
 logger = logging.getLogger(__name__)
 
@@ -21,6 +22,7 @@ def convert_image_to_webp(uploaded_file: UploadedFile) -> tuple[str, BytesIO]:
         A tuple containing the original filename with a .webp extension and
         the BytesIO stream of the converted image.
     """
+
     with uploaded_file.open("rb") as image_file:
         img = Image.open(image_file)
 
@@ -42,14 +44,6 @@ def convert_image_to_webp(uploaded_file: UploadedFile) -> tuple[str, BytesIO]:
 
         filename = Path(uploaded_file.name)
         webp_filename = filename.with_suffix(".webp")
-
-        print(f"IMAGE NAME {filename}")
-        print("SAVING IMAGE")
-        with open(
-            "/home/mark/projects/worktrees/django-ckeditors/issue-54/example/blog/tests/conv_img.webp",
-            "wb",
-        ) as f:
-            f.write(image_stream.getvalue())
 
         return str(webp_filename), image_stream
 
@@ -74,28 +68,5 @@ def _determine_quality(image_size: int) -> int:
 
     # Find the index where image_size would be inserted to maintain sorted order
     index = bisect(thresholds, image_size)
-    print(f"@@@@@@@  IMAGE QUALITY {qualities[index]} SIZE {image_size}")
     # Return the corresponding quality level
     return qualities[index]
-
-
-"""
-from django.core.files.uploadedfile import InMemoryUploadedFile
-from io import BytesIO
-from django_ckeditors.image import convert_image_to_webp as ci
-
-with open('your_image.jpg', 'rb') as f:
-    image_data = f.read()
-
-image_stream = BytesIO(image_data)  # Create a BytesIO stream
-
-uploaded_file = InMemoryUploadedFile(
-    file=image_stream, 
-    field_name='image_field',  # Optional: The name of the form field
-    name='test_image.jpg',  # Filename
-    content_type='image/jpeg',
-    size=len(image_data),
-    charset=None,
-)
-name, img = ci(uploaded_file)
-"""
