@@ -1,10 +1,21 @@
+"""django-ckeditors custom text field"""
+
+from __future__ import annotations
+
 from django.db import models
 
 from .widgets import CKEditorsWidget
 
 
 class CKEditorsField(models.TextField):
-    def __init__(self, *args, toolbar_config="default", **kwargs) -> None:
+    def __init__(
+        self,
+        *args,
+        data_extra: str | list[str] | dict[str, str] | None = None,
+        toolbar_config: str = "default",
+        **kwargs,
+    ) -> None:
+        self.data_extra = data_extra
         self.toolbar_config = toolbar_config
         super().__init__(*args, **kwargs)
 
@@ -17,17 +28,14 @@ class CKEditorsField(models.TextField):
         if "django.contrib.admin.widgets" in str(widget):
             admin_calling = True
 
-        return super().formfield(
-            **{
-                "max_length": self.max_length,
-                **(
-                    {
-                        "widget": CKEditorsWidget(
-                            admin_calling=admin_calling,
-                            toolbar_config=self.toolbar_config,
-                        ),
-                    }
-                ),
-                **kwargs,
-            },
-        )
+        # Define default values
+        defaults = {
+            "widget": CKEditorsWidget(
+                admin_calling=admin_calling,
+                data_extra=self.data_extra,
+                toolbar_config=self.toolbar_config,
+            ),
+        }
+
+        # Merge defaults with kwargs and pass to super().formfield
+        return super().formfield(**{**defaults, **kwargs})
