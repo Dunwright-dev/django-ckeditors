@@ -153,18 +153,15 @@ def handle_uploaded_image(request):
         file_name = image.name
 
     # Set up to optionally save/return url to cke text editor.
-    image_url = ""
-    img_saved = False
-    image_url, img_saved = (
-        get_image_url_and_optionally_save(
+    if get_image_url_and_optionally_save:
+        image_url, img_saved = get_image_url_and_optionally_save(
             request,
             file_name,
             image,
         )
-        if get_image_url_and_optionally_save
-        else file_name,
-        False,
-    )
+    else:
+        img_saved = False
+        image_url = file_name
 
     if not img_saved:
         filename = storage.save(name=image_url, content=image)
