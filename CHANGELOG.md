@@ -1,8 +1,12 @@
 # CHANGELOG
 
-## v0.1.0+issue-74.20240826 (2024-08-26)
+## v0.1.0 (2024-08-26)
 
 ### Chore
+
+* chore(version): Add PSR settings, update version placeholder #75 ([`d1b291d`](https://github.com/Dunwright-dev/django-ckeditors/commit/d1b291d8a8fa272209c58028e343adb4831753f0))
+
+* chore(logic): Fix upload hander #706 ([`c1fb847`](https://github.com/Dunwright-dev/django-ckeditors/commit/c1fb8471eae1091124f5dc4c6531620a86e7976e))
 
 * chore(version): Bump to 0.1.0
 
