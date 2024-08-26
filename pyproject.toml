@@ -103,6 +103,13 @@ exclude = [
 ignore_missing_imports = true
 install_types = true
 
+
+[tool.semantic_release.branches.main]
+# match = "(main|master)"
+match="issue-74"
+prerelease_token = "rc"
+prerelease = false
+
 [tool.ruff]
 lint.select = [
   "A",      # flake8-builtins
