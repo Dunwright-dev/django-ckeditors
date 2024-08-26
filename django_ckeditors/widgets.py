@@ -26,10 +26,10 @@ class CKEditorsWidget(forms.Widget):
 
     def __init__(
         self,
-        *attrs,
-        admin_calling: bool = False,
+        attrs=None,
         data_extra: str | list[str] | dict[str, str] | None = None,
         toolbar_config: str = "default",
+        admin_calling: bool = False,
     ):
         """
         A custom Django widget for integrating CKEditor 5 rich-text editor.
