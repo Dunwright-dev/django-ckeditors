@@ -9,7 +9,7 @@ keywords = ["CKEditor", "CKEditors", "Django"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
 requires-python = ">=3.7"
-version = "0.1.0"
+version = "0.1.1"
 
 authors = [
     {"name" = "Vladislav Khoboko", "email" = "vladislah@gmail.com"},
@@ -102,6 +102,22 @@ exclude = [
 ]
 ignore_missing_imports = true
 install_types = true
+
+
+[tool.semantic_release.branches.main]
+# match = "(main|master)"
+match="issue-74"
+prerelease_token = "rc"
+prerelease = false
+
+[tool.semantic_release]
+build_command="python3 -m build"
+version_variables=[
+  "django_ckeditors/__init__.py:__version__",
+  "docs/source/conf.py:__version__",
+  "pyproject.toml:version",
+  "example/pyproject.toml:version",
+]
 
 [tool.ruff]
 lint.select = [
