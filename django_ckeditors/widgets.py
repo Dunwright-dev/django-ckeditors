@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import logging
-
+import json
 from django import forms, get_version
 from django.conf import settings
 from django.forms.renderers import get_default_renderer
@@ -147,7 +147,7 @@ class CKEditorsWidget(forms.Widget):
         context["script_id"] = f'{attrs["id"]}_script'
         context["upload_url"] = reverse("ck_editors_upload_image")
         context["csrf_cookie_name"] = settings.DJ_CKE_CSRF_COOKIE_NAME
-        context["data_extra"] = self.data_extra
+        context["data_extra"] = json.dumps(self.data_extra)
         # .. NOTE: Config errors probably should not be sent to the end user.
         # if self._config_errors:
         #   context["errors"] = ErrorList(self._config_errors) #pylint:disable=commented-out code
