@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
-import logging
 import json
+import logging
+
 from django import forms, get_version
 from django.conf import settings
 from django.forms.renderers import get_default_renderer
@@ -145,7 +146,8 @@ class CKEditorsWidget(forms.Widget):
 
         context["config"] = self.config
         context["script_id"] = f'{attrs["id"]}_script'
-        context["upload_url"] = reverse("ck_editors_upload_image")
+        context["upload_image_url"] = reverse("ck_editors_upload_image")
+        context["upload_unused_image_url"] = reverse("ck_editors_upload_image")
         context["csrf_cookie_name"] = settings.DJ_CKE_CSRF_COOKIE_NAME
         context["data_extra"] = json.dumps(self.data_extra)
         # .. NOTE: Config errors probably should not be sent to the end user.
