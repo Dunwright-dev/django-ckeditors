@@ -1,5 +1,65 @@
 # CHANGELOG
 
+## v0.2.0 (2024-09-09)
+
+### Chore
+
+* chore(image): Add model and admin for removed images #77
+
+closes #77 ([`e20788d`](https://github.com/Dunwright-dev/django-ckeditors/commit/e20788d59bc9c0f611d497176c9f96a0af47ea41))
+
+* chore(image): Add image removal setting option #77
+
+closes #77 ([`2de11ac`](https://github.com/Dunwright-dev/django-ckeditors/commit/2de11ac48564bed9fdbd8631ed3207645975a57d))
+
+* chore(image): Add url items for image_removal handling #77
+
+closes #77 ([`190a185`](https://github.com/Dunwright-dev/django-ckeditors/commit/190a18501d32d2b8c084ddba88b8470e994734e8))
+
+* chore(url): rename urls in prep for added functionality #77
+
+This commit gets ready for new functionality, it remames an
+existing url so that the urls will all make sense. ([`7834410`](https://github.com/Dunwright-dev/django-ckeditors/commit/783441000f87eab15b40039949eb6e4e6a5e0c5d))
+
+* chore(args): Update init args #74
+
+closes #74 ([`3aaebac`](https://github.com/Dunwright-dev/django-ckeditors/commit/3aaebaccf3f7e56ae74d7f27166550574a14b712))
+
+### Feature
+
+* feat(image): Add unused image removal #77
+
+This commit provides tools to extract images that have been
+uploaded in a ckeditor, and later removed.  The options are
+to delete the images (default), or store them in the database
+for processing at a later time.
+
+closes #77 ([`da9ae2f`](https://github.com/Dunwright-dev/django-ckeditors/commit/da9ae2f4575f071d4deae7bcc06d3d927110f1b8))
+
+### Fix
+
+* fix(data): add json.dumps to context #78
+
+Added json.dumps to the extra_data context.
+
+closes #78 ([`1e5a5eb`](https://github.com/Dunwright-dev/django-ckeditors/commit/1e5a5ebd6e8452ad7efc928522310864c24e6402))
+
+### Test
+
+* test(upload): comment out broken test #74
+
+closes #74 ([`66703ae`](https://github.com/Dunwright-dev/django-ckeditors/commit/66703ae72011eaae46630633c52db263e4796d05))
+
+### Unknown
+
+* Merge pull request #80 from Dunwright-dev/issue-77
+
+feat(image): Add unused image removal #77 ([`d548a3b`](https://github.com/Dunwright-dev/django-ckeditors/commit/d548a3b24bc7ccd0e22088e5eed94d67d7ca656f))
+
+* Merge pull request #76 from Dunwright-dev/issue-74
+
+fix(helper): Custom URL handler logic #74 ([`be4bc6c`](https://github.com/Dunwright-dev/django-ckeditors/commit/be4bc6c9bdcebfeda71615b9d0a0aef3c3160ea9))
+
 ## v0.1.2 (2024-08-26)
 
 ## v0.1.1 (2024-08-26)
