@@ -10,6 +10,10 @@ class DjangoCKEditorsConfig(AppConfig):
     name = "django_ckeditors"
 
     def ready(self):
+         if not hasattr(settings, "DJ_CKE_BULK_CREATE_BATCH_SIZE"):
+            settings.DJ_CKE_BULK_CREATE_BATCH_SIZE: int = 50  # type: ignore[attr-defined]
+
+
         if not hasattr(settings, "DJ_CKE_CSRF_COOKIE_NAME"):
             settings.DJ_CKE_CSRF_COOKIE_NAME: str = settings.CSRF_COOKIE_NAME  # type: ignore[attr-defined]
 

@@ -1,25 +1,17 @@
 import ClassicEditor from './src/ckeditor';
 import './src/override-django.css';
-
+//import ImageLoadObserver from '@ckeditor/ckeditor5-image/src/image/imageloadobserver';
 let editors = [];
-// Store image URLs for each editor, placeholder for future useage.
-const editorImageUrls = new Map(); 
 
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        let cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            let cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
-        }
-    }
-    return cookieValue;
-}
+/**
+ * Creates a custom event named 'djcke.ckeImageRemovalEvent' and makes it globally available on the `window` object.
+ * 
+ * This event is intended to be dispatched when images are removed from a CKEditor instance, 
+ * allowing other parts of the application to listen for and respond to this event.
+ */
+window.ckeImageRemovalEvent = new CustomEvent('djcke.ckeImageRemovalEvent');
 
+window.createEditors = createEditors;
 
 function createEditors(element = document.body) {
 
@@ -43,6 +35,11 @@ function createEditors(element = document.body) {
             `#${script_id}-ck-editors-upload-url`
         ).getAttribute('data-upload-image-url');
 
+        const upload_unused_image_url = element.querySelector(
+            `#${script_id}-ck-editors-upload-url`
+        ).getAttribute('data-upload-unused-image-url');
+
+
         const csrf_cookie_name = element.querySelector(
             `#${script_id}-ck-editors-upload-url`
         ).getAttribute('data-csrf_cookie_name');
@@ -55,7 +52,6 @@ function createEditors(element = document.body) {
         if (labelElement) {
             labelElement.style.float = 'none';
         }
-        //console.log('EXTRA DATA', data_extra)
 
         const config = JSON.parse(
             element.querySelector(`#${script_id}-span`).textContent,
@@ -76,9 +72,9 @@ function createEditors(element = document.body) {
             }
         };
 
-
         ClassicEditor.create(editorEl, config)
             .then(editor => {
+
                 //  WordCount plugin handling
                 if (editor.plugins.has('WordCount')) {
                     const wordCountPlugin = editor.plugins.get('WordCount');
@@ -86,37 +82,310 @@ function createEditors(element = document.body) {
                     wordCountWrapper.innerHTML = '';
                     wordCountWrapper.appendChild(wordCountPlugin.wordCountContainer);
                 };
-                // Extract initial image URLs for this editor
-                const previousImageUrls = extractImageUrls(editor.getData());
-                editorImageUrls.set(editor, previousImageUrls);
 
-                // Listen for content changes
+                // Declare constants
+                // Extract initial image URLs for this editor when instantiated
+                // The purpose is to collect all images for existing editor edits
+                const allEncounteredImageUrls=extractImageUrls(editor.getData()); 
+                const currentEditorImageUrls=[];
+                const form = editor.ui.view.element.closest('form');
+
+                // Declare variables
+                let editorChanged = false;
+                let editorCurrentContent="";
+                let isProcessing = false; // Flag to track if processing is in progress
+
+                // This is highly inefficient.  The ImageLaadObserver
+                // is not playing nicely so I will need to come back
+                // and work on it when I have some time...
                 editor.model.document.on('change:data', () => {
-                    const currentContent = editor.getData();
-                    const currentImageUrls = extractImageUrls(currentContent);
+                    if (isProcessing) {
+                        return; // Skip processing if already in progress
+                    }
 
-                    // Compare and identify removed images
-                    const removedImages = findRemovedImages(previousImageUrls, currentImageUrls);
-                    removedImages.forEach(imageUrl => {
-                        console.log('Image removed from', editor, ':', imageUrl);
-                        //sendRemovedImageToServer(imageUrl, upload_unused_image_url); // Pass the URL
-                    });
+                    //console.log("CHANGED DATA");
+                    isProcessing = true;
+                    editorChanged=true;
+                    editorCurrentContent = editor.getData();
+                    currentEditorImageUrls.length=0;
+                    currentEditorImageUrls.push(...extractImageUrls(editorCurrentContent));
+                    //console.log('CD: Current Images Updated', currentEditorImageUrls);
+                    allEncounteredImageUrls.push(...currentEditorImageUrls);
+                    //console.log('CD: All Images Updated DUPLICATES', allEncounteredImageUrls);
+                    removeDuplicatesInPlace(allEncounteredImageUrls);
+                    //console.log('CD: All Images Updated: DEDUPED', allEncounteredImageUrls);
+                    // Schedule the flag reset after 1 second
+                    setTimeout(() => {
+                        isProcessing = false;
+                    }, 100); // 100 milliseconds = 0.1 second
 
-                    // Update the stored URLs for the next comparison
-                    editorImageUrls.set(editor, currentImageUrls); 
+
+                });
+
+                form.addEventListener('submit', () => {
+
+                    const editorIdToRemove = editor.id; 
+                    const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
+
+                    if (indexToRemove !== -1) { // Check if the editor was found
+                        //editor.updateSourceElement();
+                        //editor.destroy();
+                        ////console.log('IS IT DESTROYED??????', editor);
+
+                        processRemovedImages(editor,  allEncounteredImageUrls, upload_unused_image_url, csrf_cookie_name);
+                        editors.splice(indexToRemove, 1); 
+                        //console.log("Removed editor with ID:", editorIdToRemove);
+                    } else {
+                        console.warn("Editor with ID not found:", editorIdToRemove);
+                    }
+                    //console.log('EDITORS AFTER REMOVAL', editors);
+
+                });
+                //
+                document.addEventListener('djcke.ckeImageRemovalEvent', () => {
+                    // ... (your existing code to check editorChanged)
+                    // Call the extracted function
+                    // Find the index of the editor with the matching ID
+
+                    const editorIdToRemove = editor.id; 
+                    const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
+
+                    if (indexToRemove !== -1) { // Check if the editor was found
+                        //editor.updateSourceElement();
+                        //editor.destroy();
+                        ////console.log('IS IT DESTROYED??????', editor);
+
+                        processRemovedImages(editor,  allEncounteredImageUrls, upload_unused_image_url, csrf_cookie_name);
+                        editors.splice(indexToRemove, 1); 
+                        console.log("Removed editor with ID:", editorIdToRemove);
+                    } else {
+                        console.warn("Editor with ID not found:", editorIdToRemove);
+                    }
+                    console.log('EDITORS AFTER REMOVAL', editors);
+
                 });
 
                 editors.push(editor);
-            })
-            .catch(error => {
-                console.error(error);
+                console.log('EDITORS ARE NOW:', editors)
+                }).catch(error => {
+                console.error((error));
             });
-
         editorEl.setAttribute('data-processed', '1');
     });
 
-    window.editors = editors; 
+    window.editors = editors;
     window.ClassicEditor = ClassicEditor;
+}
+
+/**
+ * Processes removed images from a CKEditor instance, potentially sending them to the server for further handling.
+ *
+ * @param {Array<string>} allEncounteredImageUrls - An array of all image URLs encountered so far in the editor.
+ * @param {string} finalContent - The final HTML content of the editor after potential changes.
+ * @param {ClassicEditor} editor - The CKEditor instance.
+ * @param {string} uploadUnusedImageUrl - The URL of the server endpoint to handle removed image URLs.
+ * @param {string} csrfCookieName - The name of the CSRF cookie for security.
+ * @returns {Promise} - A promise that resolves when the image removal processing is complete (with or without server interaction).
+ */
+function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImageUrl, csrfCookieName) {
+    return new Promise((resolve, reject) => {
+        const editorCurrentContent = editor.getData();
+        // Extract image URLs from the final content
+        const editorCurrentImageUrls = extractImageUrls(editorCurrentContent);
+
+        removeDuplicatesInPlace(allEncounteredImageUrls);
+        // Identify image URLs that have been removed from the editor
+        const editorRemovedImageUrlsArray = handleImageRemovals(allEncounteredImageUrls, editorCurrentContent, editor);
+        //console.log('PROCESSING: PROMISE INIT REMOVED IMAGES:', editorRemovedImageUrlsArray)
+
+        resolve(editorRemovedImageUrlsArray);
+    })
+        .then(editorRemovedImageUrlsArray => {
+            //console.log('PROMISE FIRST THEN REMOVED IMAGES', editorRemovedImageUrlsArray);
+            //console.log('Removed Image Array length', editorRemovedImageUrlsArray.length);
+
+            // If there are removed images, send them to the server
+            if (editorRemovedImageUrlsArray.length > 0) {
+                //console.log("**** SENDING REMOVED IMAGES ****", editorRemovedImageUrlsArray);
+                //console.log("**** SENDING REMOVED IMAGES LENGTH ****", editorRemovedImageUrlsArray.length);
+
+                return sendRemovedImagesArrayToServer(editorRemovedImageUrlsArray, uploadUnusedImageUrl, getCookie(csrfCookieName), editor);
+            } else {
+                // If no images were removed, return a resolved promise
+                return Promise.resolve();
+            }
+        })
+        .then(serverResponseData => {
+            if (serverResponseData && 'success' in serverResponseData) {
+                //console.log('SUCCESS: Data from server:', serverResponseData);
+            } else if (serverResponseData && 'error' in serverResponseData) {
+                //console.log('ERROR: Data from server:', serverResponseData);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        })
+        .finally(() => {
+            //editorRemovedImageUrlsArray.length = 0; 
+            setTimeout(() => {
+                //console.log('**** IMAGE REMOVAL TIMERzzzz  ****')
+            }, 0);
+
+            // Destroy the editor 
+            //if (editor && !editor.isDestroyed) {
+            //    console.log('@@@@@@@ DESTROYING EDITOR @@@@@@', editor.id);
+            //    editor.destroy();
+            //}
+
+            //console.log('EDITORS AFTER REMOVAL', editors);
+        });
+}
+
+/**
+ * Sends an array of removed image URLs to the server using a POST request.
+ *
+ * @param {Array<string>} imageUrlArray - An array of image URLs to be sent to the server.
+ * @param {string} endpointUrl - The URL of the server endpoint to handle the request.
+ * @param {string} csrf_cookie - The CSRF token value for security.
+ * @param {ClassicEditor} editor - The CKEditor instance (optional, for debugging or context).
+ * @returns {Promise} - A promise that resolves with the server's response data or rejects with an error.
+ */
+function sendRemovedImagesArrayToServer(imageUrlArray, endpointUrl, csrf_cookie, editor) {
+    return new Promise((resolve, reject) => {
+        //console.log("Sending Images to the server", editor ? editor.id : 'N/A'); // Handle potential undefined editor
+
+        fetch(endpointUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrf_cookie,
+            },
+            body: JSON.stringify({ imageUrls: imageUrlArray }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    reject(new Error('Network response was not ok'));
+                }
+                return response.json();
+            })
+            .then(data => {
+                resolve(data); // Resolve the promise with the server response data
+            })
+            .catch(error => {
+                console.error('Error sending image URL:', error);
+                reject(error); // Reject the promise with the error
+            });
+    });
+}
+
+// This just keeps the arrays sensible until
+// I can get the ImageLoadObserver playing nicely...
+/**
+ * Removes duplicate elements from an array in-place, including handling nested arrays and empty arrays.
+ *
+ * @param {Array} arr - The array to de-duplicate.
+ */
+function removeDuplicatesInPlace(arr) {
+    const seen = new Set();
+    for (let i = 0; i < arr.length; i++) {
+        const element = arr[i];
+
+        // Handle nested arrays
+        if (Array.isArray(element)) {
+            removeDuplicatesInPlace(element); // Recursively remove duplicates within nested arrays
+
+            // Handle empty arrays explicitly
+            if (element.length === 0) {
+                arr.splice(i, 1);
+                i--;
+                continue; // Skip to the next iteration after removing an empty array
+            }
+
+            // Convert nested array to a string for comparison in the Set
+            const stringifiedElement = JSON.stringify(element);
+            if (seen.has(stringifiedElement)) {
+                arr.splice(i, 1);
+                i--;
+            } else {
+                seen.add(stringifiedElement);
+            }
+        } else if (seen.has(element) || element === '') {
+            arr.splice(i, 1);
+            i--;
+        } else {
+            seen.add(element);
+        }
+    }
+}
+
+/**
+ * Handles the identification and processing of removed images from a CKEditor instance.
+ *
+ * @param {Array<string>} allEncounteredImageUrls - An array of all image URLs encountered so far in the editor.
+ * @param {string} finalContent - The final HTML content of the editor after potential changes.
+ * @param {ClassicEditor} editor - The CKEditor instance (optional, for debugging or context).
+ * @returns {Array<string>} - An array of image URLs that were removed from the editor's content.
+ */
+function handleImageRemovals(allEncounteredImageUrls, finalContent, editor) {
+    try {
+        // Extract image URLs from the final content
+        const editorFinalImageUrls = extractImageUrls(finalContent);
+        const editorRemovedImageUrlsArray = [];
+        // Find removed images and add their URLs to the array
+        editorRemovedImageUrlsArray.push(...findRemovedImages(allEncounteredImageUrls, editorFinalImageUrls, editor));
+        return editorRemovedImageUrlsArray; 
+    } catch (error) {
+        // Handle potential errors during image removal processing
+        console.error('Error in handleImageRemovals:', error);
+
+        // Return an empty array to indicate no removals (or adjust as needed)
+        return []; 
+    }
+}
+
+/**
+ * Finds and returns image URLs that were removed from the editor's content.
+ *
+ * @param {Array<string>} allEncounteredImageUrls - An array of all image URLs encountered so far in the editor.
+ * @param {Array<string>} editorFinalImageUrls - An array of image URLs currently present in the editor's content.
+ * @param {ClassicEditor} editor - The CKEditor instance (optional, for debugging or context).
+ * @returns {Array<string>} - An array of image URLs that were removed from the editor's content.
+ */
+function findRemovedImages(allEncounteredImageUrls, editorFinalImageUrls,editor) {
+    // If there are no final image URLs (e.g., the editor is empty), 
+    // return all encountered image URLs as removed.
+    if (!editorFinalImageUrls) {
+        //console.log('editorFinalImageUrls is empty, returning all:' , allEncounteredImageUrls);
+        return allEncounteredImageUrls;
+    };
+    // Filter allEncounteredImageUrls to keep only those not present in editorFinalImageUrls
+    const filteredImageUrls = allEncounteredImageUrls.filter(imageUrl => !editorFinalImageUrls.includes(imageUrl));
+
+    return filteredImageUrls;
+}
+
+/**
+ * Retrieves the value of a cookie with the specified name.
+ *
+ * @param {string} name - The name of the cookie to retrieve.
+ * @returns {string|null} - The cookie's value if found, otherwise null.
+ */
+function getCookie(name) {
+    let cookieValue = null;
+    // Check if there are any cookies set
+    if (document.cookie && document.cookie !== '') {
+        let cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i].trim();
+            // Check if this cookie's name matches the provided name
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                // Extract and decode the value
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
 }
 
 /**
@@ -142,34 +411,6 @@ function extractImageUrls(content) {
     return Array.from(images).map(img => img.src);
 }
 
-// Function to find removed image URLs by comparing two arrays
-function findRemovedImages(oldImageUrls, newImageUrls) {
-    return oldImageUrls.filter(imageUrl => !newImageUrls.includes(imageUrl));
-}
-
-// Function to send removed image URLs to the server
-function sendRemovedImageToServer(imageUrl, endpointUrl) {
-    fetch(endpointUrl, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json', 
-            'X-CSRFToken': getCookie(csrf_cookie_name),
-        },
-        body: JSON.stringify({ imageUrl }),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json(); // Or handle the response as needed by your server
-        })
-        .then(data => {
-            console.log('Server response:', data);
-        })
-        .catch(error => {
-            console.error('Error sending image URL:', error);
-        });
-}
 
 /**
  * This function filters the list of mutations only by added elements, thus
@@ -187,7 +428,6 @@ function getAddedNodes(recordList) {
         .filter(node => node.nodeType === 1);
 }
 
-window.createEditors = createEditors;
 
 document.addEventListener("DOMContentLoaded", () => {
     createEditors();
@@ -217,3 +457,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // Starts to observe the selected father element with the configured options
     observer.observe(mainContent, observerOptions);
 });
+
+
