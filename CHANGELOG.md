@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v0.2.1 (2024-09-10)
+
+### Fix
+
+* fix(app): Indentation errors in settings #82
+
+closes 82 ([`1edb95c`](https://github.com/Dunwright-dev/django-ckeditors/commit/1edb95ca4cae01551d2799150df07c91f6e66f75))
+
+### Unknown
+
+* Merge pull request #83 from Dunwright-dev/issue-82
+
+fix(app): Indentation errors in settings #82 ([`4555912`](https://github.com/Dunwright-dev/django-ckeditors/commit/455591295db367ee675133a0568fb9be1436d4da))
+
+* Merge pull request #81 from Dunwright-dev/release
+
+0.2.0 ([`8295031`](https://github.com/Dunwright-dev/django-ckeditors/commit/82950310aa161984befc349363a15ceebd70fe50))
+
 ## v0.2.0 (2024-09-09)
 
 ### Chore
