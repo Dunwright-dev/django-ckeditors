@@ -10,8 +10,10 @@ class DjangoCKEditorsConfig(AppConfig):
     name = "django_ckeditors"
 
     def ready(self):
-        # Unsure as to why this was used originally,
-        # but here it is just in case.
+         if not hasattr(settings, "DJ_CKE_BULK_CREATE_BATCH_SIZE"):
+            settings.DJ_CKE_BULK_CREATE_BATCH_SIZE: int = 50  # type: ignore[attr-defined]
+
+
         if not hasattr(settings, "DJ_CKE_CSRF_COOKIE_NAME"):
             settings.DJ_CKE_CSRF_COOKIE_NAME: str = settings.CSRF_COOKIE_NAME  # type: ignore[attr-defined]
 
@@ -34,6 +36,12 @@ class DjangoCKEditorsConfig(AppConfig):
             )
         if not hasattr(settings, "DJ_CKE_FORMAT_IMAGE"):
             settings.DJ_CKE_FORMAT_IMAGE = True  # False: keep original formt and name.
+
+        # Either delete or store Images not in the editor.  These are
+        # images added and then removed from the editor. The image will
+        # persist in storage unless handled outside the editor.
+        if not hasattr(settings, "DJ_CKE_IMAGE_DELETION"):
+            settings.DJ_CKE_IMAGE_DELETION: bool = False  # type: ignore[attr-defined]
 
         if not hasattr(settings, "DJ_CKE_IMAGE_URL_HANDLER"):
             settings.DJ_CKE_IMAGE_URL_HANDLER: str = ""  # type: ignore[attr-defined]

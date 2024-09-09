@@ -1,11 +1,19 @@
 """django-ckeditor helpers."""
 
+import json
 import logging
+from pathlib import Path
+from queue import Queue
+from threading import Lock
 
 import filetype
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
-from django.utils.module_loading import import_string
+from django.core.files.storage import default_storage
+from django.utils import timezone
+from django.utils.module_loading import (
+    import_string,
+)
 from PIL import Image, UnidentifiedImageError
 
 from django_ckeditors.exceptions import (
@@ -13,8 +21,107 @@ from django_ckeditors.exceptions import (
     PillowImageError,
 )
 from django_ckeditors.image import convert_image_to_webp
+from django_ckeditors.models import UnusedImageURLS as img_model
 
 logger = logging.getLogger(__name__)
+
+
+class ImageRemovalQueueProcessor:
+    def __init__(self):
+        self._batch_size = getattr(settings, "DJ_CKE_BULK_CREATE_BATCH_SIZE", 50)
+        self._image_instances = []
+        self._is_processing = False
+        self._media_path = Path(settings.MEDIA_ROOT)
+        self._queue = Queue()
+        self._queue_lock = Lock()
+
+    @property
+    def is_processing(self):
+        with self._queue_lock:
+            return self._is_processing
+
+    def set_processing(self, value):
+        with self._queue_lock:
+            self._is_processing = value
+
+    def enqueue_image_urls(self, image_urls_data):
+        """
+        Adds the raw request body data to the queue.
+        """
+
+        self._queue.put(image_urls_data)
+
+        # Trigger processing if not already running
+        if not self._is_processing:
+            self._process_queue()
+
+    def _process_queue(self):
+        """
+        Processes the image removal queue, either deleting images or saving their paths
+        to a model.
+
+        """
+        self._image_instances = []
+        self._delete_images = settings.DJ_CKE_IMAGE_DELETION
+
+        if self._is_processing:
+            msg = "The queue is already processing images, so return."
+            logger.debug(msg)
+            return
+
+        if not self._queue.empty():
+            self.set_processing(True)
+
+        while not self._queue.empty():
+            encoded_data = self._queue.get()
+            try:
+                decoded_data = json.loads(encoded_data.decode("utf-8"))
+                image_urls_list = decoded_data["imageUrls"]
+
+                for url in image_urls_list:
+                    if not isinstance(url, str):
+                        msg = f"Invalid URL type: {type(url)}. Expected a string."
+                        raise TypeError(msg)
+
+                    file_path = url.split(settings.MEDIA_URL)[1]
+                    image_path = Path(settings.MEDIA_ROOT) / file_path
+
+                    if self._delete_images:
+                        if default_storage.exists(image_path):
+                            default_storage.delete(image_path)
+                        else:
+                            msg = f"Image deletion error, image path not found: {image_path}"
+                            logger.error(msg)
+                    else:
+                        # Create model instances and add them to the list
+                        self._image_instances.append(
+                            img_model(
+                                image_url=url,
+                                created=timezone.now(),
+                            ),
+                        )
+
+                # Bulk create the model instances (only if not deleting)
+                # This allows additional processing options for the dev.
+                if not self._delete_images:
+                    img_model.objects.bulk_create(
+                        self._image_instances,
+                        ignore_conflicts=True,
+                    )
+                    self._image_instances = []  # Reset the batch
+
+            except json.JSONDecodeError:
+                # Handle other errors gracefully
+                msg = "Error decoding JSON data:"
+                logger.exception(msg)
+
+            finally:
+                self._queue.task_done()
+
+        self.set_processing(False)
+
+
+image_removal_processor = ImageRemovalQueueProcessor()
 
 
 def get_storage_class():
