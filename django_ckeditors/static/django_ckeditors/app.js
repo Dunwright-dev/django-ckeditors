@@ -4,12 +4,13 @@ import './src/override-django.css';
 let editors = [];
 
 /**
- * Creates a custom event named 'djcke.ckeImageRemovalEvent' and makes it globally available on the `window` object.
+ * Creates a custom event named 'djcke.djCkeEditorCleanUp' and makes it globally available on the `window` object.
  * 
  * This event is intended to be dispatched when images are removed from a CKEditor instance, 
  * allowing other parts of the application to listen for and respond to this event.
+ * Use this when you are not using a form submit, eg HTMX Post to do final cleanup of the editor
  */
-window.ckeImageRemovalEvent = new CustomEvent('djcke.ckeImageRemovalEvent');
+window.djCkeEditorCleanUp = new CustomEvent('djcke.djCkeEditorCleanUp');
 
 window.createEditors = createEditors;
 
@@ -103,17 +104,13 @@ function createEditors(element = document.body) {
                         return; // Skip processing if already in progress
                     }
 
-                    //console.log("CHANGED DATA");
                     isProcessing = true;
                     editorChanged=true;
                     editorCurrentContent = editor.getData();
                     currentEditorImageUrls.length=0;
                     currentEditorImageUrls.push(...extractImageUrls(editorCurrentContent));
-                    //console.log('CD: Current Images Updated', currentEditorImageUrls);
                     allEncounteredImageUrls.push(...currentEditorImageUrls);
-                    //console.log('CD: All Images Updated DUPLICATES', allEncounteredImageUrls);
                     removeDuplicatesInPlace(allEncounteredImageUrls);
-                    //console.log('CD: All Images Updated: DEDUPED', allEncounteredImageUrls);
                     // Schedule the flag reset after 1 second
                     setTimeout(() => {
                         isProcessing = false;
@@ -128,22 +125,16 @@ function createEditors(element = document.body) {
                     const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
 
                     if (indexToRemove !== -1) { // Check if the editor was found
-                        //editor.updateSourceElement();
-                        //editor.destroy();
-                        ////console.log('IS IT DESTROYED??????', editor);
-
+                        editor.updateSourceElement();
                         processRemovedImages(editor,  allEncounteredImageUrls, upload_unused_image_url, csrf_cookie_name);
                         editors.splice(indexToRemove, 1); 
-                        //console.log("Removed editor with ID:", editorIdToRemove);
+                        editor.destroy();
                     } else {
-                        console.warn("Editor with ID not found:", editorIdToRemove);
+                        console.warn("Submit Button: Editor with ID not found:", editorIdToRemove);
                     }
-                    //console.log('EDITORS AFTER REMOVAL', editors);
-
                 });
-                //
-                document.addEventListener('djcke.ckeImageRemovalEvent', () => {
-                    // ... (your existing code to check editorChanged)
+
+                document.addEventListener('djcke.djCkeEditorCleanUp', () => {
                     // Call the extracted function
                     // Find the index of the editor with the matching ID
 
@@ -151,23 +142,22 @@ function createEditors(element = document.body) {
                     const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
 
                     if (indexToRemove !== -1) { // Check if the editor was found
-                        //editor.updateSourceElement();
-                        //editor.destroy();
-                        ////console.log('IS IT DESTROYED??????', editor);
+                        editor.updateSourceElement();
 
                         processRemovedImages(editor,  allEncounteredImageUrls, upload_unused_image_url, csrf_cookie_name);
+                        editor.destroy();
                         editors.splice(indexToRemove, 1); 
-                        console.log("Removed editor with ID:", editorIdToRemove);
+                        //console.log("Removed editor with ID:", editorIdToRemove);
                     } else {
-                        console.warn("Editor with ID not found:", editorIdToRemove);
+                        console.warn("Removal Event: Editor with ID not found:", editorIdToRemove);
                     }
-                    console.log('EDITORS AFTER REMOVAL', editors);
+                    //console.log('EDITORS AFTER REMOVAL', editors);
 
                 });
 
                 editors.push(editor);
-                console.log('EDITORS ARE NOW:', editors)
-                }).catch(error => {
+                //console.log('EDITORS ARE NOW:', editors);
+            }).catch(error => {
                 console.error((error));
             });
         editorEl.setAttribute('data-processed', '1');
@@ -201,8 +191,6 @@ function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImag
         resolve(editorRemovedImageUrlsArray);
     })
         .then(editorRemovedImageUrlsArray => {
-            //console.log('PROMISE FIRST THEN REMOVED IMAGES', editorRemovedImageUrlsArray);
-            //console.log('Removed Image Array length', editorRemovedImageUrlsArray.length);
 
             // If there are removed images, send them to the server
             if (editorRemovedImageUrlsArray.length > 0) {
@@ -226,18 +214,10 @@ function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImag
             console.error('Error:', error);
         })
         .finally(() => {
-            //editorRemovedImageUrlsArray.length = 0; 
             setTimeout(() => {
-                //console.log('**** IMAGE REMOVAL TIMERzzzz  ****')
+                //console.log('**** IMAGE REMOVAL TIMER  ****')
             }, 0);
 
-            // Destroy the editor 
-            //if (editor && !editor.isDestroyed) {
-            //    console.log('@@@@@@@ DESTROYING EDITOR @@@@@@', editor.id);
-            //    editor.destroy();
-            //}
-
-            //console.log('EDITORS AFTER REMOVAL', editors);
         });
 }
 
@@ -252,7 +232,6 @@ function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImag
  */
 function sendRemovedImagesArrayToServer(imageUrlArray, endpointUrl, csrf_cookie, editor) {
     return new Promise((resolve, reject) => {
-        //console.log("Sending Images to the server", editor ? editor.id : 'N/A'); // Handle potential undefined editor
 
         fetch(endpointUrl, {
             method: 'POST',
@@ -453,9 +432,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Selects the parent element where the events occur
     const mainContent = document.body;
+    const modalContainer = document.getElementById('modal');
+    const slideContainer = document.getElementById('slide');
 
     // Starts to observe the selected father element with the configured options
     observer.observe(mainContent, observerOptions);
+    observer.observe(modalContainer, observerOptions);
+    observer.observe(slideContainer, observerOptions);
 });
 
 
