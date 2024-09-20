@@ -1,5 +1,47 @@
 # CHANGELOG
 
+## v0.2.2 (2024-09-21)
+
+### Chore
+
+* chore(deps-dev): Bump webpack from 5.93.0 to 5.94.0 in /django_ckeditors
+
+Bumps [webpack](https://github.com/webpack/webpack) from 5.93.0 to 5.94.0.
+- [Release notes](https://github.com/webpack/webpack/releases)
+- [Commits](https://github.com/webpack/webpack/compare/v5.93.0...v5.94.0)
+
+---
+updated-dependencies:
+- dependency-name: webpack
+  dependency-type: direct:development
+...
+
+Signed-off-by: dependabot[bot] &lt;support@github.com&gt; ([`2cf38ea`](https://github.com/Dunwright-dev/django-ckeditors/commit/2cf38eaf0d599dfb51e427c236e90813dc9f894f))
+
+### Fix
+
+* fix(app): Add observers, rename event #85
+
+In some instances when using htmx and alpline.js the editors
+where not being created correctly.  Adding mutation observers
+for #modal and #slide seems to have solved this issue.
+
+closes #85 ([`2e32083`](https://github.com/Dunwright-dev/django-ckeditors/commit/2e3208314c53e144bbb5e323cc7e4651f80c10c6))
+
+### Unknown
+
+* Merge pull request #86 from Dunwright-dev/issue-85
+
+fix(app): Add observers, rename event #85 ([`b1dbb1c`](https://github.com/Dunwright-dev/django-ckeditors/commit/b1dbb1c8aad62f46200f6dc0b83ce490b46f1aeb))
+
+* Merge pull request #79 from Dunwright-dev/dependabot/npm_and_yarn/django_ckeditors/webpack-5.94.0
+
+chore(deps-dev): Bump webpack from 5.93.0 to 5.94.0 in /django_ckeditors ([`00acdf2`](https://github.com/Dunwright-dev/django-ckeditors/commit/00acdf220af7b04c411850beaae500893371cc97))
+
+* Merge pull request #84 from Dunwright-dev/release
+
+0.2.1 ([`013a097`](https://github.com/Dunwright-dev/django-ckeditors/commit/013a0972047de17765e49219d9e2fda02facb960))
+
 ## v0.2.1 (2024-09-10)
 
 ### Fix
