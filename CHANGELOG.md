@@ -1,5 +1,23 @@
 # CHANGELOG
 
+## v0.2.3 (2024-09-25)
+
+### Fix
+
+* fix(event): Add detail:sender to custom event for debug #88
+
+closes #88 ([`7c0d869`](https://github.com/Dunwright-dev/django-ckeditors/commit/7c0d86929bb536652a2e9bcd999b86ace519aa64))
+
+### Unknown
+
+* Merge pull request #89 from Dunwright-dev/issue-88
+
+fix(event): Add detail:sender to custom event for debug #88 ([`840e19b`](https://github.com/Dunwright-dev/django-ckeditors/commit/840e19ba0ba3a9a18ba7e97d650c9f289ca0e8ed))
+
+* Merge pull request #87 from Dunwright-dev/release
+
+0.2.2 ([`401bdb7`](https://github.com/Dunwright-dev/django-ckeditors/commit/401bdb7b29fa5e4148fb3cd9768240a75de71f1e))
+
 ## v0.2.2 (2024-09-21)
 
 ### Chore

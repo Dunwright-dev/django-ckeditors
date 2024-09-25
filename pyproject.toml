@@ -9,7 +9,7 @@ keywords = ["CKEditor", "CKEditors", "Django"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
 requires-python = ">=3.7"
-version = "0.2.2"
+version = "0.2.3"
 
 authors = [
     {"name" = "Vladislav Khoboko", "email" = "vladislah@gmail.com"},
@@ -105,8 +105,7 @@ install_types = true
 
 
 [tool.semantic_release.branches.main]
-# match = "(main|master)"
-match="release"
+match = "(main|release)"
 prerelease_token = "rc"
 prerelease = false
 
