@@ -10,7 +10,13 @@ let editors = [];
  * allowing other parts of the application to listen for and respond to this event.
  * Use this when you are not using a form submit, eg HTMX Post to do final cleanup of the editor
  */
-window.djCkeEditorCleanUp = new CustomEvent('djcke.djCkeEditorCleanUp');
+
+window.djCkeEditorCleanUp = new CustomEvent('djcke.djCkeEditorCleanUp', {
+    detail: {
+        sender: null
+    }
+
+});
 
 window.createEditors = createEditors;
 
@@ -134,9 +140,12 @@ function createEditors(element = document.body) {
                     }
                 });
 
-                document.addEventListener('djcke.djCkeEditorCleanUp', () => {
+                document.addEventListener('djcke.djCkeEditorCleanUp', (event) => {
                     // Call the extracted function
                     // Find the index of the editor with the matching ID
+
+                    console.log('CKE CLEANUP EVENT SENDER', event.detail.sender);
+                    //console.log('EVENT BEING CHECKED', editor.id);
 
                     const editorIdToRemove = editor.id; 
                     const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
