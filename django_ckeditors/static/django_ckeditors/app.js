@@ -125,21 +125,21 @@ function createEditors(element = document.body) {
 
                 });
 
-                form.addEventListener('submit', () => {
-
-                    const editorIdToRemove = editor.id; 
-                    const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
-
-                    if (indexToRemove !== -1) { // Check if the editor was found
-                        editor.updateSourceElement();
-                        processRemovedImages(editor,  allEncounteredImageUrls, upload_unused_image_url, csrf_cookie_name);
-                        editors.splice(indexToRemove, 1); 
-                        editor.destroy();
-                    } else {
-                        console.warn("Submit Button: Editor with ID not found:", editorIdToRemove);
-                    }
-                });
-
+                //form.addEventListener('submit', () => {
+                //
+                //    const editorIdToRemove = editor.id; 
+                //    const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
+                //
+                //    if (indexToRemove !== -1) { // Check if the editor was found
+                //        editor.updateSourceElement();
+                //        processRemovedImages(editor,  allEncounteredImageUrls, upload_unused_image_url, csrf_cookie_name);
+                //        editors.splice(indexToRemove, 1); 
+                //        editor.destroy();
+                //    } else {
+                //        console.warn("Submit Button: Editor with ID not found:", editorIdToRemove);
+                //    }
+                //});
+                //
                 document.addEventListener('djcke.djCkeEditorCleanUp', (event) => {
                     // Call the extracted function
                     // Find the index of the editor with the matching ID
