@@ -18,6 +18,50 @@ window.djCkeEditorCleanUp = new CustomEvent('djcke.djCkeEditorCleanUp', {
 
 });
 
+/**
+ * Custom event to enable the read-only mode for a CKEditor instance globally.
+ *
+ * @event djcke.djCkeEnableGlobalReadonly
+ * @type {CustomEvent}
+ * @property {object} detail -  Details about the read-only mode.
+ * @property {boolean} detail.hideToolbar - Indicates whether to hide the 
+ *                                          toolbar in read-only mode. 
+ *                                          Defaults to false.
+ * 
+ * @example
+ * // Dispatch the event to enable read-only mode and hide the toolbar
+ * window.dispatchEvent(new CustomEvent('djcke.djCkeEnableGlobalReadonly', {
+ *   detail: { hideToolbar: true }
+ * }));
+ */
+window.djCkeEnableGlobalReadonly= new CustomEvent('djcke.djCkeEnableGlobalReadonly', {
+    detail: {
+        hideToolbar: false
+    }
+
+});
+
+/**
+ * Custom event to disable the read-only mode for a CKEditor instance globally.
+ *
+ * @event djcke.djCkeDisableGlobalReadonly
+ * @type {CustomEvent}
+ * @property {object} detail - Details about the read-only mode.
+ * @property {boolean} detail.hideToolbar - Indicates whether the toolbar was 
+ *                                          hidden in read-only mode. 
+ *                                          Defaults to false.
+ * 
+ * @example
+ * // Dispatch the event to disable read-only mode
+ * window.dispatchEvent(new CustomEvent('djcke.djCkeDisableGlobalReadonly')); 
+ */
+window.djCkeDisableGlobalReadonly= new CustomEvent('djcke.djCkeDisableGlobalReadonly', {
+    detail: {
+        hideToolbar: false
+    }
+
+});
+
 window.createEditors = createEditors;
 
 function createEditors(element = document.body) {
@@ -140,13 +184,63 @@ function createEditors(element = document.body) {
                 //    }
                 //});
                 //
+
+                // Declare the variable for height transition
+                let originalToolbarHeight = null;
+
+                document.addEventListener('djcke.djCkeEnableGlobalReadonly', (event) => {
+                    editor.enableReadOnlyMode(editor.id);
+
+                    const toolbarElement = editor.ui.view.toolbar.element;
+
+                    if (event.detail.hideToolbar) {
+                        originalToolbarHeight =  getComputedStyle(toolbarElement).height; // Get initial height
+                        toolbarElement.style.height = originalToolbarHeight
+
+                        // Wait for the next frame to ensure the initial height is set
+                        requestAnimationFrame(() => {
+                            toolbarElement.style.height = '0'; // Transition height to 0
+                        });
+                    } else {
+                        toolbarElement.style.display = 'flex'; // Or 'block' if that's the default
+                        toolbarElement.style.height = 'auto'; // Restore original height
+                    }
+                });
+
+                document.addEventListener('djcke.djCkeDisableGlobalReadonly', (event) => {
+                    editor.disableReadOnlyMode(editor.id);
+
+                    const toolbarElement = editor.ui.view.toolbar.element;
+
+                    if (originalToolbarHeight) {
+
+                        toolbarElement.style.height = '0px';
+
+                        // Wait for the next frame to ensure the height is applied
+                        requestAnimationFrame(() => {
+
+                            toolbarElement.style.height = originalToolbarHeight; // Transition height to the original setting
+
+                            // Reset after the transition is complete
+                            setTimeout(() => {
+                                originalToolbarHeight = null;
+                                toolbarElement.style.display = 'flex'; // Restore original display
+                                toolbarElement.style.height = 'auto'; // Restore original height
+
+                            }, 300); 
+                        });
+                    } else {
+                        // If originalToolbarHeight is not available, use the fallback method
+                        toolbarElement.style.display = 'flex';
+                        toolbarElement.classList.add('ck-toolbar-transition');
+                        toolbarElement.offsetHeight; 
+                        toolbarElement.style.height = 'auto'; 
+                    }
+                });
+
                 document.addEventListener('djcke.djCkeEditorCleanUp', (event) => {
                     // Call the extracted function
                     // Find the index of the editor with the matching ID
-
-                    console.log('CKE CLEANUP EVENT SENDER', event.detail.sender);
-                    //console.log('EVENT BEING CHECKED', editor.id);
-
                     const editorIdToRemove = editor.id; 
                     const indexToRemove = editors.findIndex(editor => editor.id === editorIdToRemove);
 
@@ -165,7 +259,6 @@ function createEditors(element = document.body) {
                 });
 
                 editors.push(editor);
-                //console.log('EDITORS ARE NOW:', editors);
             }).catch(error => {
                 console.error((error));
             });
