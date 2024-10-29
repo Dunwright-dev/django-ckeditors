@@ -1,3 +1,10 @@
+.ck .ck-toolbar {
+    transition-property: height;
+    transition-duration: 300ms; 
+    transition-timing-function: ease-in-out;
+    overflow: hidden;
+    will-change: height; /* For potential performance improvement */
+}
 /** Todo list **/
 
 .ck .todo-list input {
