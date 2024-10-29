@@ -9,7 +9,7 @@ keywords = ["CKEditor", "CKEditors", "Django"]
 license = {text = "BSD-3-Clause"}
 readme = "README.rst"
 requires-python = ">=3.7"
-version = "0.2.3"
+version = "0.2.4"
 
 authors = [
     {"name" = "Vladislav Khoboko", "email" = "vladislah@gmail.com"},
@@ -117,6 +117,11 @@ version_variables=[
   "pyproject.toml:version",
   "example/pyproject.toml:version",
 ]
+type=[
+"github",
+]
+ignore_token_for_push=true
+token="GH_TOKEN"
 
 [tool.ruff]
 lint.select = [

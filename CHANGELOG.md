@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v0.2.4 (2024-10-29)
+
+### Fix
+
+* fix(submit): Commented out submit listener until further work #90
+
+closes #90 ([`014a27f`](https://github.com/Dunwright-dev/django-ckeditors/commit/014a27f5fb72605611d07c7446d0a7222de25b95))
+
+### Unknown
+
+* Merge pull request #91 from Dunwright-dev/issue-90
+
+fix(submit): Commented out submit listener until further work #90 ([`387d48d`](https://github.com/Dunwright-dev/django-ckeditors/commit/387d48d23a7cab4b46656c80af88e7e12d89b9a9))
+
 ## v0.2.3 (2024-09-25)
 
 ### Fix
