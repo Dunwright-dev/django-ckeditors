@@ -1,6 +1,9 @@
 
 Django CKEditors |Docs| |Django| |Repo|
 =======================================
+|
+
+**Version = 2024.12.18.1**
 
 |
 
