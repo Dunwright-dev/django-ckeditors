@@ -95,16 +95,22 @@ class ChangelogUpdater:
         self.docs_conf_path = Path("docs/source/conf.py")
         self.readme_path = Path("README.rst")
         self.project_path = Path("pyproject.toml")
-        self.package_path = Path("tag_me/__init__.py")
+        self.package_path = Path("django_ckeditors/__init__.py")
         self.version_path = Path("version.toml")
 
         # Verify required files exist
         if not self.changelog_path.exists():
-            raise FileNotFoundError("CHANGELOG.md not found")
+            msg = "CHANGELOG.md not found"
+            raise FileNotFoundError(msg)
         if not self.project_path.exists():
-            raise FileNotFoundError("pyproject.toml not found")
+            msg = "pyproject.toml not found"
+            raise FileNotFoundError(msg)
+        if not self.package_path.exists():
+            msg = "django_ckeditors/__init__.py not found"
+            raise FileNotFoundError(msg)
         if not self.version_path.exists():
-            raise FileNotFoundError("version.toml not found")
+            msg = "version.toml not found"
+            raise FileNotFoundError(msg)
 
     @staticmethod
     def _get_github_client() -> Github:
