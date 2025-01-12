@@ -1,5 +1,9 @@
 # CHANGELOG
 
+<!--next-version-placeholder-->
+
+## Semantic Versioning Below
+
 ## v0.2.3 (2024-09-25)
 
 ### Fix
