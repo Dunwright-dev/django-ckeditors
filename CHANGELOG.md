@@ -2,6 +2,14 @@
 
 <!--next-version-placeholder-->
 
+## [2025.01.12.1]
+
+### Maintenance
+- Add changelog commit signing (git) [#96](https://github.com/Dunwright-dev/django-ckeditors/pull/96)
+- Turn off linting, fix file name (git) [#96](https://github.com/Dunwright-dev/django-ckeditors/pull/96)
+- Update versioning to date style (version) [#96](https://github.com/Dunwright-dev/django-ckeditors/pull/96)
+
+
 ## Semantic Versioning Below
 
 ## v0.2.3 (2024-09-25)
