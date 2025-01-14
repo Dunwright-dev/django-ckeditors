@@ -155,8 +155,17 @@ function createEditors(element = document.body) {
                     }
 
                     isProcessing = true;
+
+                    // Get the current data
+                    const editorData = editor.getData();
+
+                    // Update the source element directly
+                    if (editor.sourceElement && editor.sourceElement.tagName.toLowerCase() === 'textarea') {
+                        editor.sourceElement.value = editorData;
+                    }
+
                     editorChanged=true;
-                    editorCurrentContent = editor.getData();
+                    editorCurrentContent = editorData;
                     currentEditorImageUrls.length=0;
                     currentEditorImageUrls.push(...extractImageUrls(editorCurrentContent));
                     allEncounteredImageUrls.push(...currentEditorImageUrls);
@@ -269,6 +278,7 @@ function createEditors(element = document.body) {
     window.ClassicEditor = ClassicEditor;
 }
 
+
 /**
  * Processes removed images from a CKEditor instance, potentially sending them to the server for further handling.
  *
@@ -296,8 +306,6 @@ function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImag
 
             // If there are removed images, send them to the server
             if (editorRemovedImageUrlsArray.length > 0) {
-                //console.log("**** SENDING REMOVED IMAGES ****", editorRemovedImageUrlsArray);
-                //console.log("**** SENDING REMOVED IMAGES LENGTH ****", editorRemovedImageUrlsArray.length);
 
                 return sendRemovedImagesArrayToServer(editorRemovedImageUrlsArray, uploadUnusedImageUrl, getCookie(csrfCookieName), editor);
             } else {
@@ -307,7 +315,6 @@ function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImag
         })
         .then(serverResponseData => {
             if (serverResponseData && 'success' in serverResponseData) {
-                //console.log('SUCCESS: Data from server:', serverResponseData);
             } else if (serverResponseData && 'error' in serverResponseData) {
                 //console.log('ERROR: Data from server:', serverResponseData);
             }
@@ -317,7 +324,6 @@ function processRemovedImages(editor,  allEncounteredImageUrls, uploadUnusedImag
         })
         .finally(() => {
             setTimeout(() => {
-                //console.log('**** IMAGE REMOVAL TIMER  ****')
             }, 0);
 
         });
