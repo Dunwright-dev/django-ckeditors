@@ -2,12 +2,20 @@
 
 <!--next-version-placeholder-->
 
+## [2025.01.14.2]
+
+### Maintenance
+- Update release/build/deploy workflow (git) [#98](https://github.com/Dunwright-dev/django-ckeditors/pull/98)
+
+
 ## [2025.01.14.1]
+
+### Maintenance
+- Update release/build/deploy workflow (git) [#98](https://github.com/Dunwright-dev/django-ckeditors/pull/98)
 
 ### Bug Fixes
 - Add sourceElement sync (editor) [#99](https://github.com/Dunwright-dev/django-ckeditors/pull/99)
 - Roll back to V42, V43 breaks toolbar (deps) [#100](https://github.com/Dunwright-dev/django-ckeditors/pull/100)
-
 
 ## [2025.01.12.1]
 
