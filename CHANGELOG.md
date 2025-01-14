@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## [2025.01.14.1]
+
+### Maintenance
+- Update release/build/deploy workflow (git) [#98](https://github.com/Dunwright-dev/django-ckeditors/pull/98)
+
+
 ## [2025.01.12.1]
 
 ### Maintenance
