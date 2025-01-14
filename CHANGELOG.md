@@ -2,6 +2,13 @@
 
 <!--next-version-placeholder-->
 
+## [2025.01.14.1]
+
+### Bug Fixes
+- Add sourceElement sync (editor) [#99](https://github.com/Dunwright-dev/django-ckeditors/pull/99)
+- Roll back to V42, V43 breaks toolbar (deps) [#100](https://github.com/Dunwright-dev/django-ckeditors/pull/100)
+
+
 ## [2025.01.12.1]
 
 ### Maintenance
