@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## [2025.02.12.1]
+
+### Bug Fixes
+- Add display hidden to hidden input (template) [#103](https://github.com/Dunwright-dev/django-ckeditors/pull/103)
+
+
 ## [2025.01.14.2]
 
 ### Maintenance
