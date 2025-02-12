@@ -145,7 +145,7 @@ jobs:
         working-directory: ./django_ckeditors
         run: npm run prod
       - name: Install Python dependencies
-        run: python -m pip install --upgrade pip build wheel twine
+        run: python -m pip install --upgrade pip build wheel twine setuptools
       - name: Build dist packages
         run: python -m build --sdist --wheel
       - name: Upload packages
