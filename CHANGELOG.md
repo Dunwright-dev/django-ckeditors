@@ -2,6 +2,15 @@
 
 <!--next-version-placeholder-->
 
+## [2025.05.22.1]
+
+### Maintenance
+- Update webpack and package-lock for ES2022 (deps) [#113](https://github.com/Dunwright-dev/django-ckeditors/pull/113)
+
+### Documentation
+- Add webpack reference page (build) [#113](https://github.com/Dunwright-dev/django-ckeditors/pull/113)
+
+
 ## [2025.02.12.1]
 
 ### Bug Fixes

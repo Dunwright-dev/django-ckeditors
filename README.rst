@@ -3,7 +3,7 @@ Django CKEditors |Docs| |Django| |Repo|
 =======================================
 |
 
-**Version = 2025.02.12.1**
+**Version = 2025.05.22.1**
 
 |
 
