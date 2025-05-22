@@ -11,7 +11,7 @@ import sys
 
 sys.path.insert(0, os.path.abspath(".."))
 
-__version__ = "2025.02.12.1"
+__version__ = "2025.05.22.1"
 
 project = "Django CKEditors"
 project_copyright = "2024, Mark Sevelj"
