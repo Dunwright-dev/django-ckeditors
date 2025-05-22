@@ -7,6 +7,9 @@
 ### Maintenance
 - Update to latest css (css) [#119](https://github.com/Dunwright-dev/django-ckeditors/pull/119)
 
+### Bug Fixes
+- Changed overflow behaviour to visible (toolbar) [#117](https://github.com/Dunwright-dev/django-ckeditors/pull/117)
+
 
 ## [2025.05.22.1]
 
