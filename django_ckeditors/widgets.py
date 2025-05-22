@@ -86,7 +86,8 @@ class CKEditorsWidget(forms.Widget):
     class Media:
         css = {
             "all": [
-                "django_ckeditors/dist/styles.css",
+                "django_ckeditors/dist/ckeditor.css",
+                "django_ckeditors/dist/main.css",
             ],
         }
         custom_css = getattr(settings, "DJ_CKE_CUSTOM_CSS", None)
