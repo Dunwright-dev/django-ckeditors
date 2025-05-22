@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## [2025.05.22.2]
+
+### Maintenance
+- Update to latest css (css) [#119](https://github.com/Dunwright-dev/django-ckeditors/pull/119)
+
+
 ## [2025.05.22.1]
 
 ### Maintenance
