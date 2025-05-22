@@ -1,7 +1,7 @@
 <div class="ck-editor-container">
     <textarea name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %}>
                 {% if widget.value %}{{ widget.value }}{% endif %}
-                style="display: none;"
+        {# style="display: none;" #}
         </textarea>
     <span class="word-count" id="{{ script_id }}-word-count"></span>
     {% if errors %}{{ errors }}{% endif %}
