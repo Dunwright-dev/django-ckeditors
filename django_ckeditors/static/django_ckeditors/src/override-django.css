@@ -2,7 +2,7 @@
     transition-property: height;
     transition-duration: 300ms; 
     transition-timing-function: ease-in-out;
-    overflow: hidden;
+    overflow: visible; 
     will-change: height; /* For potential performance improvement */
 }
 /** Todo list **/
