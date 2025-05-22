@@ -2,6 +2,12 @@
 
 <!--next-version-placeholder-->
 
+## [2025.05.22.2]
+
+### Bug Fixes
+- Changed overflow behaviour to visible (toolbar) [#117](https://github.com/Dunwright-dev/django-ckeditors/pull/117)
+
+
 ## [2025.05.22.1]
 
 ### Maintenance
