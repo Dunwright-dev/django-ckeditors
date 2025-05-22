@@ -43,12 +43,16 @@ See the Quickstart: `here <https://django-ckeditors.readthedocs.io/en/latest/how
 |
 
 Ideal For:
+~~~~~~~~~~
+
 
     * Blogs
     * Content Management Systems (CMS)
     * Websites requiring advanced text editing features
 
-**Includes the following CKEditor 5 plugins:**
+
+Includes the following CKEditor 5 plugins
+-----------------------------------------
 
 * **Text Formatting**
     * **Basic:**
@@ -121,6 +125,39 @@ Ideal For:
     * **Word Processing Features**
         * WordCount
         * Mention
+
+|
+
+
+Optimizing Bundle Size
+----------------------
+
+|
+
+By default, django-ckeditors includes all available languages. If you only need specific languages, you can create a custom build:
+
+1. Clone this repository
+2. Modify `webpack.config.mjs`:
+
+.. code-block:: javascript
+
+    new CKEditorTranslationsPlugin({
+        language: 'en', // This is the main language, you can change this to suit
+
+        // and or
+        additionalLanguages: ['es', 'fr'], // Only languages you need
+        // additionalLanguages: 'all',
+
+        buildAllTranslationsToSeparateFiles: true,
+    }),
+
+3.  Run `npm run prod` to build with only your required languages.
+
+
+.. code-block:: bash
+
+    npm run prod
+
 
 |
 
