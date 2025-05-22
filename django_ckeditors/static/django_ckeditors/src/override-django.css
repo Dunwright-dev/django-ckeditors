@@ -1,3 +1,4 @@
+/* Your existing styles */
 .ck .ck-toolbar {
     transition-property: height;
     transition-duration: 300ms; 
@@ -5,8 +6,8 @@
     overflow: hidden;
     will-change: height; /* For potential performance improvement */
 }
-/** Todo list **/
 
+/** Todo list **/
 .ck .todo-list input {
     padding: 0;
 }
@@ -28,6 +29,7 @@
     background: inherit;
 }
 
+/* Editor list styles (your existing styles) */
 form .aligned .ck ul li {
     list-style: inherit;
 }
@@ -36,6 +38,7 @@ form .aligned .ck ul {
     margin-left: 1.5em;
     padding-left: inherit;
 }
+
 .ck-word-count{
     display: flex;
     margin-top: 10px;
@@ -49,6 +52,97 @@ form .aligned .ck ul {
     position: relative;
     width: 100%;
 }
+
 .ck-editor-container{
     width: 100%;
 }
+
+/* ADD THESE NEW STYLES FOR CONTENT DISPLAY */
+
+/* CKEditor Content Styles - For displaying content */
+.ck-content ul,
+.ck-content ol,
+.ck.ck-content ul,
+.ck.ck-content ol {
+    margin: 1em 0 !important;
+    padding-left: 2em !important;
+    list-style: revert !important;
+}
+
+.ck-content ul,
+.ck.ck-content ul {
+    list-style-type: disc !important;
+}
+
+.ck-content ol,
+.ck.ck-content ol {
+    list-style-type: decimal !important;
+}
+
+.ck-content ul ul,
+.ck.ck-content ul ul {
+    list-style-type: circle !important;
+}
+
+.ck-content ul ul ul,
+.ck.ck-content ul ul ul {
+    list-style-type: square !important;
+}
+
+.ck-content ol ol,
+.ck.ck-content ol ol {
+    list-style-type: lower-alpha !important;
+}
+
+.ck-content ol ol ol,
+.ck.ck-content ol ol ol {
+    list-style-type: lower-roman !important;
+}
+
+.ck-content li,
+.ck.ck-content li {
+    display: list-item !important;
+    margin: 0.5em 0 !important;
+}
+
+/* More specific targeting for Django CKEditor content */
+/* .ck-editor-container ul, */
+/* .ck-editor-container ol { */
+/*     margin: 1em 0 !important; */
+/*     padding-left: 2em !important; */
+/*     list-style: revert !important; */
+/* } */
+/**/
+/* .ck-editor-container ul { */
+/*     list-style-type: disc !important; */
+/* } */
+/**/
+/* .ck-editor-container ol { */
+/*     list-style-type: decimal !important; */
+/* } */
+/**/
+/* .ck-editor-container li { */
+/*     display: list-item !important; */
+/*     margin: 0.5em 0 !important; */
+/* } */
+
+/* Global fix for any CKEditor generated content that might be displayed */
+/* div[class*="ck"] ul, */
+/* div[class*="ck"] ol, */
+/* div[id*="ck"] ul, */
+/* div[id*="ck"] ol { */
+/*     margin: 1em 0 !important; */
+/*     padding-left: 2em !important; */
+/* } */
+/**/
+/* div[class*="ck"] ul li, */
+/* div[id*="ck"] ul li { */
+/*     list-style-type: disc !important; */
+/*     display: list-item !important; */
+/* } */
+/**/
+/* div[class*="ck"] ol li, */
+/* div[id*="ck"] ol li { */
+/*     list-style-type: decimal !important; */
+/*     display: list-item !important; */
+/* } */
