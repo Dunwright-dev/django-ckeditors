@@ -1,6 +1,13 @@
 
-Django CKEditors |Docs| |Django| |Repo|
+Django CKEditors 
 =======================================
+
+|Repo| |Docs| |Django| 
+
+   **This is archived and no longer supported.**
+
+   See the `django-blocknote repository`_ for an alternative.
+
 |
 
 **Version = 2025.05.22.3**
@@ -167,6 +174,8 @@ By default, django-ckeditors includes all available languages. If you only need 
 .. |Django| image:: https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FimAsparky%2Fdjango-ckeditors%2Fmain%2Fpyproject.toml&query=project.dependencies&logo=Django&label=Versions&labelColor=%23092E20
    :target: https://docs.djangoproject.com/en/4.2/
    :alt: Django Version Badge
-.. |Repo| image:: https://www.repostatus.org/badges/latest/wip.svg
-   :target: https://www.repostatus.org/#wip
-   :alt: Project Status: WIP – Initial development is in progress, but there has not yet been a stable, usable release suitable for the public.
+.. |Repo| image:: https://www.repostatus.org/badges/latest/unsupported.svg
+   :alt: Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.
+   :target: https://www.repostatus.org/#unsupported 
+
+.. _django-blocknote repository: https://github.com/Dunwright-dev/django-blocknote
