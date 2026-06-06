@@ -47,6 +47,10 @@ pygments_dark_style = "monokai"
 html_theme = "furo"
 html_static_path = ["_static"]
 
+html_theme_options = {
+    "announcement": 'This project is archived, and now uses blocknote, see at <a href="https://codeberg.org/dunwright/django-blocknote</a>.',
+}
+
 # sphinx-copybutton is a lightweight code-block copy button
 # config options are here https://sphinx-copybutton.readthedocs.io/en/latest/
 # This config removes Python Repl + continuation, Bash line prefixes,
