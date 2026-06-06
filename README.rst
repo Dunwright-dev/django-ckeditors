@@ -1,12 +1,14 @@
-
 Django CKEditors 
 =======================================
 
 |Repo| |Docs| |Django| 
 
-   **This is archived and no longer supported.**
+    **This project has moved and is no longer maintained.**
 
-   See the `django-blocknote repository`_ for an alternative.
+    Development has moved to **django-blocknote**, now hosted on Codeberg:
+    https://codeberg.org/dunwright/django-blocknote
+
+    Please update your bookmarks, links, and dependencies to point there.
 
 |
 
@@ -174,8 +176,8 @@ By default, django-ckeditors includes all available languages. If you only need 
 .. |Django| image:: https://img.shields.io/badge/dynamic/toml?url=https%3A%2F%2Fraw.githubusercontent.com%2FimAsparky%2Fdjango-ckeditors%2Fmain%2Fpyproject.toml&query=project.dependencies&logo=Django&label=Versions&labelColor=%23092E20
    :target: https://docs.djangoproject.com/en/4.2/
    :alt: Django Version Badge
-.. |Repo| image:: https://www.repostatus.org/badges/latest/unsupported.svg
-   :alt: Project Status: Unsupported – The project has reached a stable, usable state but the author(s) have ceased all work on it. A new maintainer may be desired.
-   :target: https://www.repostatus.org/#unsupported 
+.. |Repo| image:: https://www.repostatus.org/badges/latest/moved.svg
+   :alt: Project Status: Moved to https://codeberg.org/dunwright/django-blocknote – The project has been moved to a new location, and the version at that location should be considered authoritative.
+   :target: https://www.repostatus.org/#moved
 
-.. _django-blocknote repository: https://github.com/Dunwright-dev/django-blocknote
+.. _django-blocknote repository: https://codeberg.org/dunwright/django-blocknote
